@@ -18,9 +18,11 @@ services required. This makes the demo reliable and easy to host.
 - Editable knowledge that immediately changes future answers
 - Browser-local persistence, plus a one-click demo reset
 
-See [Requirements](docs/REQUIREMENTS.md), [Product and UX design](docs/DESIGN.md),
-[Technical architecture](docs/ARCHITECTURE.md), and the concise
-[Submission summary](docs/SUBMISSION.md) for the reasoning and scope.
+See [Requirements](docs/REQUIREMENTS.md),
+[Market and domain context](docs/MARKET_CONTEXT.md),
+[Product and UX design](docs/DESIGN.md), [Technical architecture](docs/ARCHITECTURE.md),
+and the concise [Submission summary](docs/SUBMISSION.md) for the reasoning and
+scope.
 
 ## Run locally
 
@@ -69,6 +71,7 @@ access to the owner's external hosting account.
 ├── app.js
 ├── docs/
 │   ├── REQUIREMENTS.md
+│   ├── MARKET_CONTEXT.md
 │   ├── DESIGN.md
 │   ├── ARCHITECTURE.md
 │   └── SUBMISSION.md

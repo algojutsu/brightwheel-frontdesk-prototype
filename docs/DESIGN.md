@@ -9,6 +9,12 @@ uncertainty into a manageable staff workflow.
 The prototype is called **SproutDesk** and uses the fictional **Little Sprouts
 Early Learning** center.
 
+In production, SproutDesk should be a capability inside brightwheel rather than
+a new standalone destination. Brightwheel already has the center, classroom,
+family, calendar, billing, and messaging context needed to provide a specific
+answer and route an exception. The standalone shell exists only to make both
+perspectives easy to evaluate in this prototype.
+
 ## Experience model
 
 ### Parent: answer, evidence, next step
@@ -66,6 +72,12 @@ Escalation carries the original question and detected topic into the staff inbox
 The prototype does not pretend to send a real message; the state change is
 clearly labeled as a demo.
 
+Production routing should use brightwheel roles and classroom context. A tuition
+exception goes to an administrator, a forgotten item may go to the classroom,
+and medication or custody questions go only to designated staff. This matters in
+a domain where teachers are frequent mobile users but should not become the
+catch-all front desk.
+
 ### Fictional but realistic data
 
 Policies include dates, exceptions, price bands, and operational language. This
@@ -118,3 +130,5 @@ proprietary data.
 - Real outbound messaging: requires credentials and creates external side effects.
 - Full handbook ingestion: the assignment explicitly values response quality over
   parsing.
+- New parent onboarding: an embedded brightwheel experience would already know
+  the authenticated family, center, and classroom.

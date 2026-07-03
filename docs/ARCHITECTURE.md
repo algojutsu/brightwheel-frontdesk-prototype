@@ -72,7 +72,8 @@ evaluations.
 
 ## Production evolution
 
-1. Add authenticated center tenancy and role-based staff access.
+1. Integrate with brightwheel identity, center tenancy, family messaging, and
+   role-based staff access instead of creating a separate account system.
 2. Store versioned knowledge in a database with approval and audit history.
 3. Build an ingestion pipeline for handbooks, calendars, billing data, and
    center-authored structured policies.
@@ -81,8 +82,8 @@ evaluations.
    decision.
 6. Evaluate answers against a curated center-specific question set before policy
    changes publish.
-7. Integrate brightwheel messaging for human handoff, with consent and delivery
-   status.
+7. Route human handoffs through brightwheel messaging using center, classroom,
+   and staff-role context, with consent and delivery status.
 8. Add privacy retention controls, observability, rate limits, and abuse
    protections.
 

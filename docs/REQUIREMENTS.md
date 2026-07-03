@@ -23,6 +23,14 @@ must reduce this work without inventing policy or mishandling sensitive issues.
 - Improve future answers with a small, clear action.
 - Retain control over sensitive or exceptional cases.
 
+### Teacher
+
+- Receive only classroom-relevant questions that require human context.
+- Avoid becoming the default destination for billing, enrollment, or policy
+  questions.
+- See the family question and assistant response without requiring the parent to
+  repeat context.
+
 ## Functional requirements
 
 ### Parent experience
@@ -68,6 +76,20 @@ must reduce this work without inventing policy or mishandling sensitive issues.
 - Prototype data must be deterministic and recoverable after a reset.
 - The codebase must be hostable as static files.
 
+## Domain requirements
+
+- The future production experience should integrate with existing brightwheel
+  family communications rather than create another disconnected operator inbox.
+- Center-authored policies must take precedence over generic early-education
+  guidance.
+- Knowledge and handoffs should be scoped by center and, where appropriate,
+  classroom.
+- Regulated or high-consequence topics must have explicit safety and escalation
+  rules.
+- Handoffs should route by topic: billing and enrollment to administrators,
+  classroom logistics to teachers, and health or safety exceptions to designated
+  staff.
+
 ## Success criteria
 
 - A reviewer can complete both core perspectives in under five minutes.
@@ -94,7 +116,8 @@ These requirements were captured from the brightwheel take-home assignment:
 - Evaluation: scope and completeness, persuasiveness, user empathy, and
   uniqueness
 
-The linked brightwheel market primer was access-restricted at capture time. The
-assignment itself provides the working context used here: operators are busy
-small-business owners; app users are anxious, deeply caring parents; and the
-product serves daycares/pre-K programs, administrators, teachers, and families.
+The supplied brightwheel market primer was subsequently reviewed and is captured
+in [Market and domain context](MARKET_CONTEXT.md). It reinforces that providers
+are regulated, predominantly independent small businesses managing many
+disconnected systems, while owners/administrators, teachers, and parents have
+distinct jobs and escalation needs.
