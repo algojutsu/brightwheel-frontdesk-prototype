@@ -20,11 +20,14 @@ without network access once the files are available.
 - Editable and creatable knowledge that immediately changes future answers
 - Browser-local persistence, plus a one-click demo reset
 
-See [Requirements](docs/REQUIREMENTS.md),
+For agent-readable context, start with [AGENTS.md](AGENTS.md) and
+[LLM wiki](docs/LLM_WIKI.md). The core project docs are
+[Problem statement](docs/PROBLEM_STATEMENT.md), [Requirements](docs/REQUIREMENTS.md),
 [Market and domain context](docs/MARKET_CONTEXT.md),
 [Product and UX design](docs/DESIGN.md), [Technical architecture](docs/ARCHITECTURE.md),
-and the concise [Submission summary](docs/SUBMISSION.md) for the reasoning and
-scope.
+[Operations](docs/OPERATIONS.md), [Decision log](docs/DECISIONS.md),
+[Error book](docs/ERROR_BOOK.md), and the concise
+[Submission summary](docs/SUBMISSION.md).
 
 ## Run locally
 
@@ -73,11 +76,17 @@ access to the owner's external hosting account.
 ├── index.html
 ├── styles.css
 ├── app.js
+├── AGENTS.md
 ├── docs/
+│   ├── LLM_WIKI.md
+│   ├── PROBLEM_STATEMENT.md
 │   ├── REQUIREMENTS.md
 │   ├── MARKET_CONTEXT.md
 │   ├── DESIGN.md
 │   ├── ARCHITECTURE.md
+│   ├── OPERATIONS.md
+│   ├── DECISIONS.md
+│   ├── ERROR_BOOK.md
 │   └── SUBMISSION.md
 └── README.md
 ```

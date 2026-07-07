@@ -7,6 +7,9 @@ email, and text. Parents need immediate, accurate answers, but center staff are
 busy and handbooks are difficult to search on mobile. A useful AI front desk
 must reduce this work without inventing policy or mishandling sensitive issues.
 
+The standalone assignment capture is maintained in
+[Problem statement](PROBLEM_STATEMENT.md).
+
 ## Users and jobs
 
 ### Parent or guardian
