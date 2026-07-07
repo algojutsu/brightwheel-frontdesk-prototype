@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sproutdesk-demo-v1";
+const STORAGE_KEY = "sproutdesk-demo-v2";
 
 const seedKnowledge = [
   {
@@ -154,6 +154,18 @@ const seedConversations = [
   },
   {
     id: 104,
+    initials: "NH",
+    family: "Nina H.",
+    question: "When does Maya move to the summer classroom?",
+    topic: "Unknown",
+    status: "unanswered",
+    answer:
+      "I couldn’t find a center policy for summer classroom transition dates, so I offered to send the question to staff.",
+    sourceId: null,
+    createdAt: "Yesterday, 2:20 PM",
+  },
+  {
+    id: 105,
     initials: "DL",
     family: "Devon L.",
     question: "What is lunch today?",
@@ -165,7 +177,7 @@ const seedConversations = [
     createdAt: "Yesterday, 11:04 AM",
   },
   {
-    id: 105,
+    id: 106,
     initials: "AC",
     family: "Alex C.",
     question: "How much is infant care?",
@@ -210,6 +222,70 @@ const sensitiveRules = [
   },
 ];
 
+const gapRules = [
+  {
+    id: "weekend-care",
+    title: "Weekend & backup care",
+    statuses: ["unanswered"],
+    keywords: ["weekend", "saturday", "sunday", "backup", "after hours"],
+    category: "Schedule",
+    actionLabel: "Draft source",
+    description: "No published policy covers weekend or backup-care availability.",
+    draft: {
+      title: "Weekend & backup care",
+      summary:
+        "Little Sprouts does not offer weekend care. Regular care is Monday–Friday, and families can ask the director about local backup-care resources.",
+      details:
+        "Care is offered Monday through Friday during regular center hours. Little Sprouts does not operate weekend classrooms.\n\nFamilies who need backup care may contact the center director for local referral resources. Referral information is not a guarantee of availability or enrollment.",
+      keywords: ["weekend", "saturday", "sunday", "backup care", "after hours"],
+    },
+  },
+  {
+    id: "summer-transitions",
+    title: "Summer classroom transitions",
+    statuses: ["unanswered"],
+    keywords: ["summer", "transition", "move", "classroom", "class"],
+    category: "Daily care",
+    actionLabel: "Draft source",
+    description: "The current calendar does not explain classroom move timing.",
+    draft: {
+      title: "Summer classroom transitions",
+      summary:
+        "Summer classroom transition dates are shared with families by May 15. Children visit their next classroom during the final two weeks of June.",
+      details:
+        "The center director shares summer classroom transition dates with families by May 15 each year.\n\nTeachers schedule short visits to the next classroom during the final two weeks of June. Final classroom placement depends on age, readiness, licensing ratios, and available spaces.",
+      keywords: ["summer", "transition", "classroom move", "move classroom", "new class"],
+    },
+  },
+  {
+    id: "medication-authorization",
+    title: "Medication authorization",
+    statuses: ["escalated"],
+    keywords: ["medicine", "medication", "dose", "tylenol", "ibuprofen", "prescription"],
+    category: "Health",
+    actionLabel: "Review safety rule",
+    sourceId: "health",
+    description: "A policy exists, but individual medication requests correctly require staff review.",
+  },
+  {
+    id: "pickup-safety",
+    title: "Pickup and custody exceptions",
+    statuses: ["escalated", "flagged"],
+    keywords: ["custody", "restraining", "pick up", "pickup", "authorized", "court order"],
+    category: "Safety",
+    actionLabel: "Draft handling rule",
+    description: "Sensitive pickup questions need designated staff and privacy-safe routing.",
+    draft: {
+      title: "Pickup and custody exceptions",
+      summary:
+        "Pickup, custody, and court-order questions must be handled directly by the center director. Families should not share sensitive legal details in chat.",
+      details:
+        "For pickup, custody, court-order, or authorized-adult changes, families should contact the center director directly.\n\nThe assistant should not collect sensitive legal details. Staff verify identity, documentation, and authorized pickup lists using the center’s private records.",
+      keywords: ["custody", "court order", "authorized pickup", "pickup change", "restraining"],
+    },
+  },
+];
+
 let state = loadState();
 let parentMessages = [];
 let selectedConversationId = state.conversations[1]?.id || state.conversations[0]?.id;
@@ -220,14 +296,69 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function categoryIcon(category) {
+  const icons = {
+    Schedule: "◷",
+    Billing: "$",
+    Health: "+",
+    "Daily care": "⌁",
+    Enrollment: "⌂",
+    Safety: "!",
+    Operations: "◇",
+  };
+  return icons[category] || "◇";
+}
+
+function assignmentForTopic(topic, status = "answered") {
+  if (status === "answered") return "Assistant resolved";
+  const assignments = {
+    Billing: "Ana Morales · Admin",
+    Enrollment: "Ana Morales · Enrollment",
+    Health: "Ana Morales · Health & safety",
+    Safety: "Ana Morales · Director only",
+    "Daily care": "Blue Room teachers",
+    Schedule: "Front desk",
+    Unknown: "Front desk triage",
+  };
+  return assignments[topic] || "Front desk triage";
+}
+
+function normalizePolicy(policy) {
+  return {
+    ...policy,
+    category: policy.category || "Operations",
+    icon: policy.icon || categoryIcon(policy.category || "Operations"),
+    keywords: Array.isArray(policy.keywords) ? policy.keywords : [],
+  };
+}
+
+function normalizeConversation(conversation) {
+  return {
+    ...conversation,
+    assignedTo:
+      conversation.assignedTo || assignmentForTopic(conversation.topic, conversation.status),
+  };
+}
+
+function normalizeState(value) {
+  return {
+    knowledge: (Array.isArray(value?.knowledge) ? value.knowledge : seedKnowledge).map(
+      normalizePolicy,
+    ),
+    conversations: (
+      Array.isArray(value?.conversations) ? value.conversations : seedConversations
+    ).map(normalizeConversation),
+  };
+}
+
 function loadState() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (saved?.knowledge && saved?.conversations) return saved;
+    if (saved?.knowledge && saved?.conversations) return normalizeState(saved);
   } catch (_error) {
     // Corrupt browser state should not break the demo.
   }
-  return { knowledge: clone(seedKnowledge), conversations: clone(seedConversations) };
+  return normalizeState({ knowledge: clone(seedKnowledge), conversations: clone(seedConversations) });
 }
 
 function saveState() {
@@ -348,6 +479,131 @@ function normalizeQuestion(question) {
   return question.toLowerCase().replace(/[^\w\s$.-]/g, " ");
 }
 
+function parseKeywords(value) {
+  return String(value)
+    .split(",")
+    .map((keyword) => keyword.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function keywordsFromText(value) {
+  const stopWords = new Set([
+    "about",
+    "after",
+    "answer",
+    "care",
+    "center",
+    "child",
+    "does",
+    "family",
+    "little",
+    "policy",
+    "question",
+    "sprouts",
+    "that",
+    "this",
+    "with",
+  ]);
+  return [...new Set(normalizeQuestion(value).split(/\s+/))]
+    .filter((word) => word.length > 3 && !stopWords.has(word))
+    .slice(0, 8);
+}
+
+function slugify(value) {
+  return (
+    normalizeQuestion(value)
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "policy"
+  );
+}
+
+function uniquePolicyId(title) {
+  const base = slugify(title);
+  let candidate = base;
+  let index = 2;
+  while (state.knowledge.some((policy) => policy.id === candidate)) {
+    candidate = `${base}-${index}`;
+    index += 1;
+  }
+  return candidate;
+}
+
+function inferKnowledgeGap(conversation) {
+  if (!conversation || conversation.status === "answered") return null;
+  const normalized = normalizeQuestion(conversation.question);
+  const matched = gapRules.find(
+    (rule) =>
+      rule.statuses.includes(conversation.status) &&
+      rule.keywords.some((keyword) => normalized.includes(keyword)),
+  );
+  if (matched) return matched;
+  if (conversation.status === "unanswered") {
+    return {
+      id: `custom-${slugify(conversation.question).slice(0, 32)}`,
+      title: "Uncovered family question",
+      statuses: ["unanswered"],
+      keywords: keywordsFromText(conversation.question),
+      category: "Operations",
+      actionLabel: "Draft source",
+      description: "No published center source supported a confident answer.",
+      draft: {
+        title: "New family question policy",
+        summary:
+          "Add the center-approved answer here before publishing this source for families.",
+        details:
+          "This draft was created from a family question the assistant could not answer. Replace this text with the approved policy, exceptions, and staff owner before publishing.",
+        keywords: keywordsFromText(conversation.question),
+      },
+    };
+  }
+  return {
+    id: `review-${slugify(conversation.question).slice(0, 32)}`,
+    title: "Sensitive handoff review",
+    statuses: [conversation.status],
+    keywords: keywordsFromText(conversation.question),
+    category: conversation.topic || "Safety",
+    actionLabel: "Review handoff",
+    description: "The assistant deferred because this needs human judgment.",
+  };
+}
+
+function buildKnowledgeGaps() {
+  const gapMap = new Map();
+  state.conversations.forEach((conversation) => {
+    const gap = inferKnowledgeGap(conversation);
+    if (!gap) return;
+    const existing = gapMap.get(gap.id) || {
+      ...gap,
+      count: 0,
+      firstConversationId: conversation.id,
+      examples: [],
+    };
+    existing.count += 1;
+    existing.examples.push(conversation);
+    gapMap.set(gap.id, existing);
+  });
+  return [...gapMap.values()].sort((a, b) => b.count - a.count || a.title.localeCompare(b.title));
+}
+
+function draftFromConversation(conversation) {
+  const gap = inferKnowledgeGap(conversation);
+  const draft = gap?.draft || {
+    title: "New family question policy",
+    summary: "Add the center-approved answer here before publishing this source for families.",
+    details:
+      "This draft was created from a family question the assistant could not answer. Replace this text with the approved policy, exceptions, and staff owner before publishing.",
+    keywords: keywordsFromText(conversation?.question || ""),
+  };
+  return {
+    title: draft.title,
+    category: gap?.category || conversation?.topic || "Operations",
+    summary: draft.summary,
+    details: `${draft.details}\n\nOriginal family question: “${conversation?.question || ""}”`,
+    keywords: draft.keywords?.length ? draft.keywords : keywordsFromText(conversation?.question || ""),
+  };
+}
+
 function answerQuestion(question) {
   const normalized = normalizeQuestion(question);
   const sensitive = sensitiveRules.find((rule) =>
@@ -416,7 +672,7 @@ function submitQuestion(question) {
 function createEscalation(message, messageIndex) {
   if (message.sent) return;
   const id = Date.now();
-  state.conversations.unshift({
+  const conversation = normalizeConversation({
     id,
     initials: "PF",
     family: "Parent follow-up",
@@ -427,11 +683,12 @@ function createEscalation(message, messageIndex) {
     sourceId: message.sourceId,
     createdAt: "Just now",
   });
+  state.conversations.unshift(conversation);
   parentMessages[messageIndex].sent = true;
   selectedConversationId = id;
   saveState();
   renderMessages();
-  updateInboxCount();
+  renderStaff();
   showToast("Question added to the staff inbox");
 }
 
@@ -458,7 +715,9 @@ function conversationRows(conversations, selected = false) {
           <span class="conversation-avatar">${escapeHtml(conversation.initials)}</span>
           <span class="conversation-copy">
             <strong>${escapeHtml(conversation.question)}</strong>
-            <span>${escapeHtml(conversation.family)} · ${escapeHtml(conversation.createdAt)}</span>
+            <span>${escapeHtml(conversation.family)} · ${escapeHtml(
+              conversation.createdAt,
+            )} · <em>${escapeHtml(conversation.assignedTo)}</em></span>
           </span>
           <span class="status-pill ${escapeHtml(conversation.status)}">● ${escapeHtml(
             formatStatus(conversation.status),
@@ -479,27 +738,30 @@ function renderOverview() {
   const recent = state.conversations.slice(0, 4);
   const answered = state.conversations.filter((item) => item.status === "answered").length;
   const total = state.conversations.length;
+  const attention = state.conversations.filter((item) => item.status !== "answered").length;
   const automation = total ? Math.round((answered / total) * 100) : 0;
+  const timeReturned = ((answered * 6) / 60).toFixed(1);
+  const gaps = buildKnowledgeGaps().slice(0, 4);
   document.querySelector("#overview-section").innerHTML = `
     <div class="metric-grid">
       <article class="metric-card">
         <div class="metric-top"><span>Questions this week</span><span class="metric-icon">◫</span></div>
-        <strong>${36 + Math.max(0, total - seedConversations.length)}</strong>
-        <small class="positive">↑ 12% from last week</small>
+        <strong>${total}</strong>
+        <small>Demo conversation set</small>
       </article>
       <article class="metric-card">
         <div class="metric-top"><span>Resolved instantly</span><span class="metric-icon">✓</span></div>
-        <strong>${Math.max(78, automation)}%</strong>
+        <strong>${automation}%</strong>
         <small>No staff time needed</small>
       </article>
       <article class="metric-card">
         <div class="metric-top"><span>Time returned</span><span class="metric-icon">◷</span></div>
-        <strong>3.8h</strong>
-        <small>Estimated this week</small>
+        <strong>${timeReturned}h</strong>
+        <small>At 6 min per resolved question</small>
       </article>
       <article class="metric-card">
         <div class="metric-top"><span>Needs attention</span><span class="metric-icon">!</span></div>
-        <strong>${state.conversations.filter((item) => item.status !== "answered").length}</strong>
+        <strong>${attention}</strong>
         <small>Questions to review</small>
       </article>
     </div>
@@ -516,9 +778,34 @@ function renderOverview() {
           <div><h2>Knowledge gaps</h2><p>Best opportunities to improve answers</p></div>
         </div>
         <div class="gap-list">
-          <div class="gap-item"><span class="gap-count">4</span><div><strong>Weekend & backup care</strong><p>No published policy. Families asked 4 times this month.</p></div></div>
-          <div class="gap-item"><span class="gap-count">2</span><div><strong>Medication authorization</strong><p>Policy exists, but these requests correctly need staff review.</p></div></div>
-          <div class="gap-item"><span class="gap-count">1</span><div><strong>Summer transition dates</strong><p>The current calendar does not include classroom moves.</p></div></div>
+          ${
+            gaps.length
+              ? gaps
+                  .map(
+                    (gap) => `
+                      <div class="gap-item">
+                        <span class="gap-count">${gap.count}</span>
+                        <div>
+                          <strong>${escapeHtml(gap.title)}</strong>
+                          <p>${escapeHtml(gap.description)}</p>
+                          <div class="gap-actions">
+                            ${
+                              gap.sourceId
+                                ? `<button class="text-button" type="button" data-source-id="${escapeHtml(
+                                    gap.sourceId,
+                                  )}">${escapeHtml(gap.actionLabel)} →</button>`
+                                : `<button class="text-button" type="button" data-draft-conversation-id="${gap.firstConversationId}">${escapeHtml(
+                                    gap.actionLabel,
+                                  )} →</button>`
+                            }
+                            <span>${gap.count === 1 ? "1 conversation" : `${gap.count} conversations`}</span>
+                          </div>
+                        </div>
+                      </div>`,
+                  )
+                  .join("")
+              : `<p class="empty-state">No active gaps. New unsupported questions will appear here automatically.</p>`
+          }
         </div>
       </article>
     </div>`;
@@ -562,9 +849,12 @@ function renderInbox() {
                 <div><h3>${escapeHtml(selected.family)}</h3><p>${escapeHtml(
                   selected.createdAt,
                 )} · ${escapeHtml(selected.topic)}</p></div>
-                <span class="status-pill ${escapeHtml(selected.status)}">● ${escapeHtml(
-                  formatStatus(selected.status),
-                )}</span>
+                <div class="detail-status-stack">
+                  <span class="status-pill ${escapeHtml(selected.status)}">● ${escapeHtml(
+                    formatStatus(selected.status),
+                  )}</span>
+                  <span class="assignment-chip">${escapeHtml(selected.assignedTo)}</span>
+                </div>
               </div>
               <div class="detail-question">“${escapeHtml(selected.question)}”</div>
               <div class="detail-answer"><strong>SproutDesk response</strong><br>${escapeHtml(
@@ -581,10 +871,12 @@ function renderInbox() {
               }
               ${
                 source
-                  ? `<button class="source-chip" style="margin-top:18px" type="button" data-source-id="${
+                  ? `<button class="source-chip source-action" type="button" data-source-id="${
                       source.id
                     }">↗ ${escapeHtml(source.title)}</button>`
-                  : `<button class="primary-button" style="margin-top:18px" type="button" data-go-section="knowledge">Add to knowledge</button>`
+                  : selected.status === "unanswered"
+                    ? `<div class="inline-actions"><button class="primary-button" type="button" data-draft-conversation-id="${selected.id}">Draft source from question</button><button class="secondary-button" type="button" data-go-section="knowledge">View knowledge</button></div>`
+                    : `<div class="inline-actions"><span class="assignment-chip">Routed for human review</span></div>`
               }
             </div>`
           : `<div class="conversation-detail"><p>No conversations match this filter.</p></div>`
@@ -596,7 +888,10 @@ function renderKnowledge() {
   document.querySelector("#knowledge-section").innerHTML = `
     <div class="section-toolbar">
       <div><h2>Center knowledge</h2><p>Published sources SproutDesk can use in family answers.</p></div>
-      <span class="system-status"><i></i> ${state.knowledge.length} sources active</span>
+      <div class="staff-header-actions">
+        <span class="system-status"><i></i> ${state.knowledge.length} sources active</span>
+        <button class="primary-button" type="button" data-new-policy>Add source</button>
+      </div>
     </div>
     <div class="knowledge-grid">
       ${state.knowledge
@@ -646,26 +941,94 @@ function setStaffSection(section) {
 function openEditPolicy(policyId) {
   const policy = state.knowledge.find((item) => item.id === policyId);
   if (!policy) return;
+  document.querySelector("#edit-dialog-title").textContent = "Edit policy";
   document.querySelector("#edit-policy-id").value = policy.id;
+  document.querySelector("#edit-policy-conversation-id").value = "";
   document.querySelector("#edit-policy-title").value = policy.title;
+  document.querySelector("#edit-policy-category").value = policy.category;
   document.querySelector("#edit-policy-summary").value = policy.summary;
   document.querySelector("#edit-policy-details").value = policy.details;
+  document.querySelector("#edit-policy-keywords").value = policy.keywords.join(", ");
+  document.querySelector("#edit-dialog").showModal();
+}
+
+function openBlankPolicy() {
+  document.querySelector("#edit-dialog-title").textContent = "Add source";
+  document.querySelector("#edit-policy-id").value = "";
+  document.querySelector("#edit-policy-conversation-id").value = "";
+  document.querySelector("#edit-policy-title").value = "";
+  document.querySelector("#edit-policy-category").value = "Operations";
+  document.querySelector("#edit-policy-summary").value = "";
+  document.querySelector("#edit-policy-details").value = "";
+  document.querySelector("#edit-policy-keywords").value = "";
+  document.querySelector("#edit-dialog").showModal();
+}
+
+function openDraftPolicyFromConversation(conversationId) {
+  const conversation = state.conversations.find((item) => item.id === Number(conversationId));
+  if (!conversation) return;
+  const draft = draftFromConversation(conversation);
+  setStaffSection("knowledge");
+  document.querySelector("#edit-dialog-title").textContent = "Draft source from question";
+  document.querySelector("#edit-policy-id").value = "";
+  document.querySelector("#edit-policy-conversation-id").value = conversation.id;
+  document.querySelector("#edit-policy-title").value = draft.title;
+  document.querySelector("#edit-policy-category").value = draft.category;
+  document.querySelector("#edit-policy-summary").value = draft.summary;
+  document.querySelector("#edit-policy-details").value = draft.details;
+  document.querySelector("#edit-policy-keywords").value = draft.keywords.join(", ");
   document.querySelector("#edit-dialog").showModal();
 }
 
 function savePolicy(event) {
   event.preventDefault();
   const id = document.querySelector("#edit-policy-id").value;
-  const policy = state.knowledge.find((item) => item.id === id);
-  if (!policy) return;
-  policy.title = document.querySelector("#edit-policy-title").value.trim();
-  policy.summary = document.querySelector("#edit-policy-summary").value.trim();
-  policy.details = document.querySelector("#edit-policy-details").value.trim();
+  const conversationId = Number(document.querySelector("#edit-policy-conversation-id").value);
+  const title = document.querySelector("#edit-policy-title").value.trim();
+  const category = document.querySelector("#edit-policy-category").value;
+  const summary = document.querySelector("#edit-policy-summary").value.trim();
+  const details = document.querySelector("#edit-policy-details").value.trim();
+  const submittedKeywords = parseKeywords(document.querySelector("#edit-policy-keywords").value);
+  const keywords = submittedKeywords.length
+    ? submittedKeywords.slice(0, 12)
+    : keywordsFromText(`${title} ${summary}`);
+  let policy = state.knowledge.find((item) => item.id === id);
+  if (!policy) {
+    policy = {
+      id: uniquePolicyId(title),
+      icon: categoryIcon(category),
+      title,
+      category,
+      summary,
+      details,
+      reviewedAt: "Just now",
+      keywords,
+    };
+    state.knowledge.unshift(policy);
+  } else {
+    policy.title = title;
+    policy.category = category;
+    policy.icon = categoryIcon(category);
+    policy.summary = summary;
+    policy.details = details;
+    policy.keywords = keywords.length ? keywords : keywordsFromText(`${title} ${summary}`);
+  }
   policy.reviewedAt = "Just now";
+  if (conversationId) {
+    const conversation = state.conversations.find((item) => item.id === conversationId);
+    if (conversation) {
+      conversation.topic = policy.category;
+      conversation.status = "answered";
+      conversation.sourceId = policy.id;
+      conversation.assignedTo = assignmentForTopic(policy.category, "answered");
+      conversation.answer = `Staff published “${policy.title}” so future families can receive a source-backed answer.`;
+      selectedConversationId = conversation.id;
+    }
+  }
   saveState();
   document.querySelector("#edit-dialog").close();
-  renderKnowledge();
-  showToast("Policy published — future answers are updated");
+  renderStaff();
+  showToast(id ? "Policy published — future answers are updated" : "Source published — gap closed");
 }
 
 document.querySelectorAll(".switch-button").forEach((button) => {
@@ -712,6 +1075,18 @@ document.querySelector(".staff-sidebar nav").addEventListener("click", (event) =
 });
 
 document.querySelector(".staff-main").addEventListener("click", (event) => {
+  const draftButton = event.target.closest("[data-draft-conversation-id]");
+  if (draftButton) {
+    openDraftPolicyFromConversation(draftButton.dataset.draftConversationId);
+    return;
+  }
+
+  const newPolicyButton = event.target.closest("[data-new-policy]");
+  if (newPolicyButton) {
+    openBlankPolicy();
+    return;
+  }
+
   const sectionButton = event.target.closest("[data-go-section]");
   if (sectionButton) setStaffSection(sectionButton.dataset.goSection);
 
@@ -747,7 +1122,7 @@ document.querySelectorAll("dialog").forEach((dialog) => {
 document.querySelector("#edit-policy-form").addEventListener("submit", savePolicy);
 
 document.querySelector("#reset-demo").addEventListener("click", () => {
-  state = { knowledge: clone(seedKnowledge), conversations: clone(seedConversations) };
+  state = normalizeState({ knowledge: clone(seedKnowledge), conversations: clone(seedConversations) });
   selectedConversationId = state.conversations[1].id;
   saveState();
   resetParentChat();

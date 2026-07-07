@@ -39,7 +39,9 @@ Family asks → assistant answers or escalates → staff sees the outcome
 ```
 
 The overview reports outcomes, the inbox exposes individual conversations, and
-the knowledge area is the intervention point.
+the knowledge area is the intervention point. Unsupported questions generate a
+gap item automatically, and staff can turn a gap into a draft source without
+retyping the family question.
 
 ## Key design decisions
 
@@ -68,14 +70,15 @@ system.
 
 ### Human handoff preserves context
 
-Escalation carries the original question and detected topic into the staff inbox.
-The prototype does not pretend to send a real message; the state change is
-clearly labeled as a demo.
+Escalation carries the original question, detected topic, and recommended owner
+into the staff inbox. The prototype does not pretend to send a real message; the
+state change is clearly labeled as a demo.
 
-Production routing should use brightwheel roles and classroom context. A tuition
-exception goes to an administrator, a forgotten item may go to the classroom,
-and medication or custody questions go only to designated staff. This matters in
-a domain where teachers are frequent mobile users but should not become the
+The demo models lightweight routing: billing and enrollment go to the director,
+daily-care questions go toward teachers, general operations go to the front
+desk, and health or custody cases are marked for designated staff. Production
+routing should use brightwheel roles and classroom context. This matters in a
+domain where teachers are frequent mobile users but should not become the
 catch-all front desk.
 
 ### Fictional but realistic data
@@ -102,9 +105,11 @@ proprietary data.
 ### Knowledge-gap improvement
 
 1. An unsupported question produces an honest limitation and escalation option.
-2. The conversation appears in the staff inbox and gap queue.
-3. Staff edits or adds the relevant source of truth.
-4. Future matching questions use the improved knowledge.
+2. The conversation appears in the staff inbox and dynamic gap queue.
+3. Staff opens a prefilled policy draft from the question.
+4. Publishing the source closes the gap and links the original conversation to
+   the new source.
+5. Future matching questions use the improved knowledge.
 
 ## Visual direction
 

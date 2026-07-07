@@ -24,7 +24,8 @@
 
 html {
   color: var(--ink);
-  font-family: "DM Sans", system-ui, sans-serif;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: var(--cream);
 }
 
@@ -35,7 +36,8 @@ body {
 
 button,
 input,
-textarea {
+textarea,
+select {
   font: inherit;
 }
 
@@ -50,7 +52,8 @@ a {
 
 button:focus-visible,
 input:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+select:focus-visible {
   outline: 3px solid rgba(38, 100, 84, 0.28);
   outline-offset: 2px;
 }
@@ -113,7 +116,7 @@ textarea:focus-visible {
 }
 
 .brand strong {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 19px;
   line-height: 1.1;
 }
@@ -178,7 +181,7 @@ textarea:focus-visible {
 
 .parent-intro h1,
 .staff-header h1 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   margin: 0;
   letter-spacing: -0.035em;
 }
@@ -259,7 +262,7 @@ textarea:focus-visible {
   border-radius: 50%;
   background: var(--forest);
   color: #fff;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 19px;
 }
 
@@ -331,7 +334,7 @@ textarea:focus-visible {
   color: #fff;
   display: grid;
   place-items: center;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 13px;
 }
 
@@ -560,7 +563,7 @@ textarea:focus-visible {
 }
 
 .family-card h2 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 25px;
   margin: 0 0 4px;
 }
@@ -862,7 +865,7 @@ textarea:focus-visible {
 .metric-card strong {
   display: block;
   margin-top: 12px;
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 27px;
 }
 
@@ -965,6 +968,12 @@ textarea:focus-visible {
   margin-top: 3px;
 }
 
+.conversation-copy em {
+  color: var(--forest-2);
+  font-style: normal;
+  font-weight: 700;
+}
+
 .status-pill {
   display: inline-flex;
   align-items: center;
@@ -1030,6 +1039,26 @@ textarea:focus-visible {
   margin: 3px 0 0;
 }
 
+.gap-actions {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.gap-actions span {
+  color: #81918a;
+  font-size: 8px;
+}
+
+.empty-state {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 15px 0 6px;
+}
+
 .section-toolbar {
   display: flex;
   justify-content: space-between;
@@ -1038,7 +1067,7 @@ textarea:focus-visible {
 }
 
 .section-toolbar h2 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   font-size: 23px;
   margin: 0;
 }
@@ -1097,6 +1126,12 @@ textarea:focus-visible {
   gap: 15px;
 }
 
+.detail-status-stack {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+}
+
 .detail-top h3 {
   margin: 0;
   font-size: 15px;
@@ -1106,6 +1141,18 @@ textarea:focus-visible {
   color: var(--ink-soft);
   font-size: 10px;
   margin: 5px 0 0;
+}
+
+.assignment-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: var(--mint-soft);
+  color: var(--forest);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 6px 8px;
+  white-space: nowrap;
 }
 
 .detail-question {
@@ -1144,6 +1191,17 @@ textarea:focus-visible {
   line-height: 1.45;
   color: #7b684e;
   margin: 4px 0 0;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.source-action {
+  margin-top: 18px;
 }
 
 .knowledge-grid {
@@ -1234,7 +1292,7 @@ textarea:focus-visible {
 }
 
 .dialog-header h2 {
-  font-family: "Fraunces", Georgia, serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
   margin: 0;
   font-size: 23px;
 }
@@ -1288,13 +1346,18 @@ textarea:focus-visible {
 }
 
 .form-fields input,
-.form-fields textarea {
+.form-fields textarea,
+.form-fields select {
   width: 100%;
   border: 1px solid #cbd9d2;
   border-radius: 9px;
   padding: 10px;
   color: var(--ink);
   line-height: 1.45;
+  background: #fff;
+}
+
+.form-fields textarea {
   resize: vertical;
 }
 

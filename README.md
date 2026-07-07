@@ -7,15 +7,17 @@ truth.
 
 The prototype uses only fictional center data. It is intentionally implemented
 as a static web app: there are no API keys, accounts, build tools, or backend
-services required. This makes the demo reliable and easy to host.
+services required. It also avoids external runtime assets, so the demo can run
+without network access once the files are available.
 
 ## What the prototype demonstrates
 
 - A mobile-first parent assistant with guided prompts and free-text questions
 - Center-specific answers with visible sources and review dates
 - Explicit uncertainty handling and human escalation
-- A staff control center showing demand, unresolved questions, and knowledge gaps
-- Editable knowledge that immediately changes future answers
+- Topic-aware staff routing for admin, teacher, front desk, and safety handoffs
+- A staff control center showing demand, unresolved questions, and dynamic knowledge gaps
+- Editable and creatable knowledge that immediately changes future answers
 - Browser-local persistence, plus a one-click demo reset
 
 See [Requirements](docs/REQUIREMENTS.md),
@@ -44,10 +46,12 @@ recommended.
 3. Ask “Can you give Maya medicine?” to see a sensitive-question handoff.
 4. Ask an unsupported question such as “Do you offer weekend care?” and send it
    to the center.
-5. Switch to **Staff view**, inspect the flagged conversation, and open
-   **Knowledge**.
-6. Edit a policy, save it, and return to Parent view. The next answer uses the
-   updated source.
+5. Switch to **Staff view** and inspect how the conversation is routed and
+   surfaced in the knowledge-gap queue.
+6. Click **Draft source from question**, review the prefilled weekend-care
+   policy, and save it.
+7. Return to Parent view and ask about weekend care again. The next answer uses
+   the newly published source.
 
 ## Hosting
 
@@ -84,5 +88,7 @@ access to the owner's external hosting account.
   service.
 - Data persists only in the current browser through `localStorage`.
 - “Send to center” creates an in-app escalation; it does not send a real message.
+- Staff publishing a new source updates prototype state immediately; production
+  would require approval history, permissions, and audit trails.
 - Authentication, multi-center tenancy, ingestion, analytics pipelines, and
   production safety review are outside this prototype's scope.

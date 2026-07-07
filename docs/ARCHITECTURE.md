@@ -8,8 +8,9 @@ and dependency-free JavaScript.
 ```text
 UI events
   ├─ parent question → intent and safety rules → source-backed response
-  ├─ escalation → local conversation store → staff inbox and metrics
-  └─ policy edit → local knowledge store → subsequent answer behavior
+  ├─ escalation → local conversation store → staff inbox, routing, and metrics
+  ├─ knowledge gap → prefilled source draft → local knowledge store
+  └─ policy edit or creation → subsequent answer behavior
 ```
 
 ## Why a static architecture
@@ -17,6 +18,8 @@ UI events
 - The prototype runs without credentials or an installation step.
 - Every evaluator sees deterministic behavior.
 - It can be hosted on GitHub Pages, Netlify, or Vercel at no cost.
+- It avoids external runtime assets, so static hosting does not require
+  third-party font or API requests.
 - The implementation keeps attention on product judgment instead of scaffolding.
 
 This is a prototype decision, not the recommended production architecture.
@@ -32,7 +35,7 @@ This is a prototype decision, not the recommended production architecture.
 - `details`
 - `reviewedAt`
 - `keywords`
-- `status`
+- `icon`
 
 ### Conversation
 
@@ -43,7 +46,7 @@ This is a prototype decision, not the recommended production architecture.
 - `answer`
 - `sourceId`
 - `createdAt`
-- `escalated`
+- `assignedTo`
 
 ### UI state
 
@@ -52,8 +55,20 @@ This is a prototype decision, not the recommended production architecture.
 - selected source or conversation
 - local edits and demo activity
 
-Knowledge edits and conversation additions are serialized to `localStorage`.
-Seed data remains in code so Reset can restore a known state.
+Knowledge edits, created sources, and conversation additions are serialized to
+`localStorage`. Seed data remains in code so Reset can restore a known state.
+
+### Knowledge gap
+
+- `id`
+- `title`
+- `statuses`
+- `keywords`
+- `category`
+- `description`
+- `actionLabel`
+- optional `sourceId`
+- optional draft source fields
 
 ## Answer engine
 
@@ -64,6 +79,8 @@ The engine follows ordered rules:
 2. Match supported intents using normalized keyword groups.
 3. Apply intent-specific response composition from the matching policy.
 4. Return an unsupported result when no source reaches the match threshold.
+5. Classify unresolved or sensitive conversations into knowledge gaps for the
+   staff control center.
 
 This emulates the product behavior of a grounded AI system while keeping the
 exercise inspectable. A production service would use hybrid retrieval, structured
