@@ -15,10 +15,14 @@ engine.
 | `What did Maya eat today?` | Escalated to classroom staff | None | Daily child-specific status needs classroom context. |
 | `How did Maya do today?` | Escalated to classroom staff | None | Daily child-specific classroom status needs staff context. |
 | `What activities did Maya do today?` | Escalated to classroom staff | None | Child-specific daily activity history needs classroom context. |
+| `Can Maya join soccer enrichment?` | Escalated to classroom staff | None | Child-specific program participation needs staff context. |
+| `Can Theo do water play today?` | Escalated to classroom staff | None | Child-specific activity participation needs staff context. |
+| `What is Maya's schedule today?` | Escalated to classroom staff | None | Child-specific schedule details need classroom context. |
 | `What is lunch today?` | Answered | Meals & nutrition | Generic menu question should be answerable. |
 | `What is the school menu?` | Answered | Meals & nutrition | Generic menu question can use a center-wide daily source. |
 | `What activities are planned today?` | Answered | Daily activities & program updates | Generic daily activity question can use a center-wide update. |
 | `Are there program changes this week?` | Answered | Daily activities & program updates | Generic program-update question can use a center-wide update. |
+| `What is the schedule today?` | Answered | Daily activities & program updates | Generic schedule question can use a center-wide daily source. |
 | `What is the late pickup fee?` | Unsupported/low confidence handoff | None | Related sources exist, but no exact late-pickup fee policy exists. |
 | `Do you offer weekend care?` | Unsupported knowledge gap, then staff handoff | None until staff publishes source | Demonstrates uncertainty, handoff, and gap creation. |
 | `Can you give Maya medicine?` | Sensitive handoff | Health & wellness policy as related context | Medication decisions require staff review. |
@@ -72,8 +76,23 @@ This specific bug must stay fixed:
 | `When will my kid learn to read?` | Classroom staff handoff |
 | `How did Maya do today?` | Classroom staff handoff |
 | `What activities did Maya do today?` | Classroom staff handoff |
+| `Can Maya join soccer enrichment?` | Classroom staff handoff |
+| `Can Theo do water play today?` | Classroom staff handoff |
+| `What is Maya's schedule today?` | Classroom staff handoff |
 
 The word `will` must not match the health keyword `ill`.
+
+## Daily update boundary regression
+
+Center-wide daily updates should answer from sources, but child-specific daily
+or program-participation questions should route to staff:
+
+| Question | Expected outcome |
+| --- | --- |
+| `What is the schedule today?` | Daily activities & program updates answer |
+| `How can I schedule a tour?` | Tours & enrollment answer |
+| `Can Maya join soccer enrichment?` | Classroom staff handoff |
+| `Can Theo do water play today?` | Classroom staff handoff |
 
 ## Suggested automated smoke check
 
@@ -119,10 +138,15 @@ const tests = [
   ['What did Maya eat today?', 'escalated', 'Classroom', null],
   ['How did Maya do today?', 'escalated', 'Classroom', null],
   ['What activities did Maya do today?', 'escalated', 'Classroom', null],
+  ['Can Maya join soccer enrichment?', 'escalated', 'Classroom', null],
+  ['Can Theo do water play today?', 'escalated', 'Classroom', null],
+  ["What is Maya's schedule today?", 'escalated', 'Classroom', null],
   ['What is lunch today?', 'answered', 'Daily care', 'meals'],
   ['What is the school menu?', 'answered', 'Daily care', 'meals'],
   ['What activities are planned today?', 'answered', 'Daily care', 'daily-updates'],
   ['Are there program changes this week?', 'answered', 'Daily care', 'daily-updates'],
+  ['What is the schedule today?', 'answered', 'Daily care', 'daily-updates'],
+  ['How can I schedule a tour?', 'answered', 'Enrollment', 'tours'],
   ['What is the late pickup fee?', 'unanswered', 'Operations', null],
   ['Do you offer weekend care?', 'unanswered', 'Unknown', null],
   ['Can you give Maya medicine?', 'escalated', 'Health', 'health'],
