@@ -13,6 +13,7 @@ engine.
 | `What is the fever policy?` | Answered | Health & wellness policy | Clean handbook-policy health question. |
 | `When will my kid learn to read?` | Escalated to classroom staff | None | Individual child development needs teacher context; do not answer from handbook. |
 | `What did Maya eat today?` | Escalated to classroom staff | None | Daily child-specific status needs classroom context. |
+| `How did Maya do today?` | Escalated to classroom staff | None | Daily child-specific classroom status needs staff context. |
 | `What is lunch today?` | Answered | Meals & nutrition | Generic menu/policy question should be answerable. |
 | `What is the late pickup fee?` | Unsupported/low confidence handoff | None | Related sources exist, but no exact late-pickup fee policy exists. |
 | `Do you offer weekend care?` | Unsupported knowledge gap, then staff handoff | None until staff publishes source | Demonstrates uncertainty, handoff, and gap creation. |
@@ -65,6 +66,7 @@ This specific bug must stay fixed:
 | Question | Expected outcome |
 | --- | --- |
 | `When will my kid learn to read?` | Classroom staff handoff |
+| `How did Maya do today?` | Classroom staff handoff |
 
 The word `will` must not match the health keyword `ill`.
 
@@ -110,6 +112,7 @@ const tests = [
   ['Can Maya come in with a fever?', 'answered', 'Health', 'health'],
   ['When will my kid learn to read?', 'escalated', 'Classroom', null],
   ['What did Maya eat today?', 'escalated', 'Classroom', null],
+  ['How did Maya do today?', 'escalated', 'Classroom', null],
   ['What is lunch today?', 'answered', 'Daily care', 'meals'],
   ['What is the late pickup fee?', 'unanswered', 'Operations', null],
   ['Do you offer weekend care?', 'unanswered', 'Unknown', null],

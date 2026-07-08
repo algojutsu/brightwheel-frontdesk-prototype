@@ -1511,6 +1511,10 @@ select:focus-visible {
   line-height: 1.45;
 }
 
+.ai-draft-note[hidden] {
+  display: none;
+}
+
 .ai-draft-note strong,
 .ai-draft-note span {
   display: block;

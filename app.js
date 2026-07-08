@@ -223,22 +223,39 @@ const sensitiveRules = [
 ];
 
 const childSpecificRule = {
-  words: [
+  childIndicators: [
+    "my kid",
+    "my child",
+    "my son",
+    "my daughter",
+    "maya",
+    "theo",
+  ],
+  contextWords: [
+    "learn to read",
+    "reading level",
     "homework",
     "assignment",
     "worksheet",
-    "reading level",
-    "learn to read",
     "ready for potty",
+    "potty training",
     "potty training progress",
+    "nap",
     "nap today",
     "napped today",
+    "ate",
     "ate today",
+    "eat",
     "eat today",
     "classroom progress",
     "development milestone",
+    "behavior",
+    "do today",
+    "did today",
+    "doing today",
     "teacher said",
   ],
+  directWords: ["homework", "assignment", "worksheet", "reading level", "learn to read"],
   topic: "Classroom",
   answer:
     "That depends on your child and classroom context, so I shouldn’t answer it from the handbook alone. SproutDesk is best for center policies; I can send this to the classroom team so a staff member can respond with the right context.",
@@ -346,7 +363,6 @@ let conversationSearch = "";
 let toastTimer;
 
 const OPEN_STATUSES = ["escalated", "unanswered", "flagged"];
-const CLOSED_STATUSES = ["answered", "resolved"];
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -446,10 +462,6 @@ function formatStatus(status) {
 
 function isOpenStatus(status) {
   return OPEN_STATUSES.includes(status);
-}
-
-function isClosedStatus(status) {
-  return CLOSED_STATUSES.includes(status);
 }
 
 function showToast(message) {
@@ -591,6 +603,22 @@ function matchedKeywords(question, keywords) {
 
 function keywordScore(matches) {
   return matches.reduce((score, keyword) => score + normalizeQuestion(keyword).split(" ").length, 0);
+}
+
+function childSpecificMatches(normalizedQuestion) {
+  const directMatches = childSpecificRule.directWords.filter((word) =>
+    keywordMatches(normalizedQuestion, word),
+  );
+  const childMatches = childSpecificRule.childIndicators.filter((word) =>
+    keywordMatches(normalizedQuestion, word),
+  );
+  const contextMatches = childSpecificRule.contextWords.filter((word) =>
+    keywordMatches(normalizedQuestion, word),
+  );
+  if (directMatches.length || (childMatches.length && contextMatches.length)) {
+    return [...new Set([...directMatches, ...childMatches, ...contextMatches])];
+  }
+  return [];
 }
 
 function parseKeywords(value) {
@@ -746,10 +774,8 @@ function answerQuestion(question) {
     };
   }
 
-  const childSpecificMatches = childSpecificRule.words.filter((word) =>
-    keywordMatches(normalized, word),
-  );
-  if (childSpecificMatches.length) {
+  const childMatches = childSpecificMatches(normalized);
+  if (childMatches.length) {
     return {
       answer: childSpecificRule.answer,
       sourceId: null,
@@ -761,7 +787,7 @@ function answerQuestion(question) {
         detectedTopic: childSpecificRule.topic,
         confidence: "Needs human context",
         matchedSource: "None",
-        matchedKeywords: childSpecificMatches,
+        matchedKeywords: childMatches,
         decision: "Escalate to classroom staff",
         reason:
           "The assistant is limited to handbook and center-policy questions. Individual development, homework, assignment, daily classroom, or child-specific questions need staff context.",
