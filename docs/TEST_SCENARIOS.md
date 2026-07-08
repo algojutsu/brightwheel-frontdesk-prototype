@@ -1,6 +1,6 @@
 # Test scenarios
 
-This document captures the product-level questions used to validate SproutDesk.
+This document captures the product-level questions used to validate brightwheel Front Desk.
 Use it as a regression checklist before submission or after changing the answer
 engine.
 

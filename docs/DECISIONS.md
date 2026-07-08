@@ -5,7 +5,7 @@ the same context.
 
 ## 1. Static app over full-stack app
 
-Decision: implement SproutDesk as static HTML, CSS, and JavaScript.
+Decision: implement brightwheel Front Desk as static HTML, CSS, and JavaScript.
 
 Reasoning:
 

@@ -6,10 +6,10 @@ The valuable product is not a chatbot that always answers. It is a front desk
 that resolves routine demand, proves where an answer came from, and converts
 uncertainty into a manageable staff workflow.
 
-The prototype is called **SproutDesk** and uses the fictional **Little Sprouts
+The prototype is called **brightwheel Front Desk** and uses the fictional **Little Sprouts
 Early Learning** center.
 
-In production, SproutDesk should be a capability inside brightwheel rather than
+In production, brightwheel Front Desk should be a capability inside brightwheel rather than
 a new standalone destination. Brightwheel already has the center, classroom,
 family, calendar, billing, and messaging context needed to provide a specific
 answer and route an exception. The standalone shell exists only to make both
@@ -69,7 +69,7 @@ without pretending a live model is running.
 
 ### Policy questions stay separate from child-specific questions
 
-SproutDesk is meant for handbook and center-policy questions. A question like
+brightwheel Front Desk is meant for handbook and center-policy questions. A question like
 “Can Maya come with a fever?” still receives the fever policy because it asks a
 general attendance rule using a child’s name. A question like “When will my kid
 learn to read?”, “What did Maya eat today?”, or a homework/assignment question
@@ -127,7 +127,9 @@ proprietary data.
 
 ## Visual direction
 
-- Warm green and cream communicate care without imitating brightwheel branding.
+- The prototype uses a Brightwheel-adjacent blue/teal palette and a simple `bw`
+  concept mark so the demo feels relevant to the assignment without copying the
+  official logo or presenting itself as a shipped Brightwheel product.
 - Parent view uses a focused phone-like conversation canvas.
 - Staff view becomes a denser responsive dashboard.
 - Rounded cards and restrained shadows create approachability while typography,

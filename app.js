@@ -1,4 +1,4 @@
-const STORAGE_KEY = "sproutdesk-demo-v2";
+const STORAGE_KEY = "brightwheel-frontdesk-demo-v1";
 
 const seedKnowledge = [
   {
@@ -258,7 +258,7 @@ const childSpecificRule = {
   directWords: ["homework", "assignment", "worksheet", "reading level", "learn to read"],
   topic: "Classroom",
   answer:
-    "That depends on your child and classroom context, so I shouldn’t answer it from the handbook alone. SproutDesk is best for center policies; I can send this to the classroom team so a staff member can respond with the right context.",
+    "That depends on your child and classroom context, so I shouldn’t answer it from the handbook alone. brightwheel Front Desk is best for center policies; I can send this to the classroom team so a staff member can respond with the right context.",
 };
 
 const gapRules = [
@@ -983,7 +983,7 @@ function resolveMatchingOpenConversations(policy, excludedConversationId = null)
     resolveConversationWithSource(
       conversation,
       policy,
-      `Staff published “${policy.title}” and SproutDesk linked this existing open question because its terms match the new source.`,
+      `Staff published “${policy.title}” and brightwheel Front Desk linked this existing open question because its terms match the new source.`,
     );
     resolved.push(conversation);
   });
@@ -1213,7 +1213,7 @@ function renderInbox() {
                 </div>
               </div>
               <div class="detail-question">“${escapeHtml(selected.question)}”</div>
-              <div class="detail-answer"><strong>SproutDesk response</strong><br>${escapeHtml(
+              <div class="detail-answer"><strong>brightwheel Front Desk response</strong><br>${escapeHtml(
                 selected.answer,
               )}</div>
               ${renderDecisionTrace(selected, source)}
@@ -1249,7 +1249,7 @@ function renderInbox() {
 function renderKnowledge() {
   document.querySelector("#knowledge-section").innerHTML = `
     <div class="section-toolbar">
-      <div><h2>Center knowledge</h2><p>Published sources SproutDesk can use in family answers.</p></div>
+      <div><h2>Center knowledge</h2><p>Published sources brightwheel Front Desk can use in family answers.</p></div>
       <div class="staff-header-actions">
         <span class="system-status"><i></i> ${state.knowledge.length} sources active</span>
         <button class="primary-button" type="button" data-new-policy>Add source</button>
@@ -1284,7 +1284,7 @@ function renderStaff() {
 
 function setStaffSection(section) {
   const labels = {
-    overview: ["Good morning, Ana", "Here’s how SproutDesk is helping families this week."],
+    overview: ["Good morning, Ana", "Here’s how brightwheel Front Desk is helping families this week."],
     inbox: ["Family conversations", "Review where the assistant answered, deferred, or struggled."],
     knowledge: ["Center knowledge", "Keep family answers accurate and up to date."],
   };
@@ -1339,7 +1339,7 @@ function openDraftPolicyFromConversation(conversationId) {
   document.querySelector("#edit-draft-note").hidden = false;
   document.querySelector("#edit-draft-note").innerHTML = `
     <strong>Review before publishing</strong>
-    <span>SproutDesk drafted this source from: “${escapeHtml(conversation.question)}”</span>
+    <span>brightwheel Front Desk drafted this source from: “${escapeHtml(conversation.question)}”</span>
     <span>Extracted keywords: ${escapeHtml(draft.keywords.join(", ") || "None")}</span>`;
   document.querySelector("#edit-policy-id").value = "";
   document.querySelector("#edit-policy-conversation-id").value = conversation.id;

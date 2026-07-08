@@ -1,6 +1,6 @@
-# SproutDesk
+# brightwheel Front Desk
 
-SproutDesk is a functional proof of concept for brightwheel's AI Front Desk
+brightwheel Front Desk is a functional proof of concept for brightwheel's AI Front Desk
 take-home exercise. It demonstrates how an early education center could answer
 common parent questions quickly while keeping staff in control of the source of
 truth.

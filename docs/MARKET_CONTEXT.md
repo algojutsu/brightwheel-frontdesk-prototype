@@ -62,7 +62,7 @@ therefore financially and emotionally consequential.
 - Adjacent programs such as camps, Sunday schools, sports, and after-school care
   have similar operational needs but are not the current focus.
 
-## Product implications for SproutDesk
+## Product implications for brightwheel Front Desk
 
 1. **Embed, do not add another system.** The production experience should live
    inside brightwheel's existing family communication and operator workflows.

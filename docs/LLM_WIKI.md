@@ -1,6 +1,6 @@
 # LLM wiki
 
-This is the compiled project memory for SproutDesk. It is structured so an LLM
+This is the compiled project memory for brightwheel Front Desk. It is structured so an LLM
 agent can quickly load the minimum context needed for a task, then follow links
 to deeper pages.
 
@@ -20,7 +20,7 @@ For most tasks:
 
 ## Canonical project facts
 
-- App name: SproutDesk.
+- App name: brightwheel Front Desk.
 - Fictional center: Little Sprouts Early Learning.
 - Assignment target: brightwheel AI Front Desk take-home prototype.
 - Implementation: static HTML, CSS, and dependency-free JavaScript.
@@ -104,9 +104,8 @@ family question → grounded answer or escalation → staff signal
 
 ## Open product questions
 
-- Whether to include a short video walkthrough or rely on the hosted prototype
-  plus `SUBMISSION.md`.
-- Whether to brand the public repo as `sproutdesk` or a more explicit
-  take-home name such as `brightwheel-ai-frontdesk`.
+- Final hosted URL after GitHub Pages is enabled.
+- Final public repository URL after the repo is pushed.
 - Whether to add screenshots before final submission. The current prototype is
-  functional without screenshots.
+  functional without screenshots and the required submission path is the hosted
+  prototype plus `SUBMISSION.md`.

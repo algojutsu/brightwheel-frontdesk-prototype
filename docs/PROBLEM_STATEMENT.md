@@ -71,7 +71,7 @@ The prototype should make these outcomes visibly different:
 
 ## Current solution summary
 
-SproutDesk is a static single-page app for a fictional center, Little Sprouts
+brightwheel Front Desk is a static single-page app for a fictional center, Little Sprouts
 Early Learning. It includes:
 
 - parent assistant with free-text and guided prompts;

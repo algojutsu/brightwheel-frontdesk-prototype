@@ -1,20 +1,20 @@
 :root {
-  --ink: #17352e;
-  --ink-soft: #536b64;
-  --forest: #17483b;
-  --forest-2: #266454;
-  --mint: #d8efe5;
-  --mint-soft: #edf8f3;
-  --cream: #fbf8f0;
+  --ink: #17213f;
+  --ink-soft: #5c668a;
+  --forest: #5463d6;
+  --forest-2: #37458a;
+  --mint: #dfe3ff;
+  --mint-soft: #f4f6ff;
+  --cream: #f8f9ff;
   --paper: #fff;
-  --peach: #f4d6b8;
-  --amber: #a75f13;
-  --amber-bg: #fff5df;
-  --red: #a8443e;
-  --red-bg: #fff0ee;
-  --line: #dfe7e2;
-  --shadow: 0 18px 50px rgba(24, 62, 52, 0.09);
-  --shadow-sm: 0 8px 24px rgba(24, 62, 52, 0.08);
+  --peach: #ffe0e2;
+  --amber: #a34e16;
+  --amber-bg: #fff4df;
+  --red: #a40c31;
+  --red-bg: #fff0f3;
+  --line: #e0e4f2;
+  --shadow: 0 18px 50px rgba(55, 69, 138, 0.11);
+  --shadow-sm: 0 8px 24px rgba(55, 69, 138, 0.09);
   --radius: 22px;
 }
 
@@ -54,7 +54,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid rgba(38, 100, 84, 0.28);
+  outline: 3px solid rgba(84, 99, 214, 0.28);
   outline-offset: 2px;
 }
 
@@ -76,8 +76,8 @@ select:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 0 max(24px, calc((100vw - 1260px) / 2));
-  border-bottom: 1px solid rgba(23, 72, 59, 0.1);
-  background: rgba(251, 248, 240, 0.93);
+  border-bottom: 1px solid rgba(84, 99, 214, 0.12);
+  background: rgba(248, 249, 255, 0.93);
   backdrop-filter: blur(14px);
   position: sticky;
   top: 0;
@@ -97,17 +97,15 @@ select:focus-visible {
   height: 40px;
   display: grid;
   place-items: center;
-  background: var(--forest);
+  background: linear-gradient(135deg, #5463d6 0%, #6476ff 52%, #29b9bb 100%);
   border-radius: 13px;
 }
 
-.brand-mark svg {
-  width: 27px;
-  fill: none;
-  stroke: #fff;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.brand-monogram {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.08em;
 }
 
 .brand strong,
@@ -116,8 +114,9 @@ select:focus-visible {
 }
 
 .brand strong {
-  font-family: ui-serif, Georgia, Cambria, "Times New Roman", serif;
-  font-size: 19px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1.1;
 }
 
@@ -132,13 +131,13 @@ select:focus-visible {
   gap: 4px;
   padding: 4px;
   border-radius: 13px;
-  background: #e9eee9;
+  background: #edf0ff;
 }
 
 .switch-button {
   border: 0;
   background: transparent;
-  color: #677b74;
+  color: #66709a;
   border-radius: 10px;
   padding: 9px 16px;
   font-size: 13px;
@@ -149,7 +148,7 @@ select:focus-visible {
 .switch-button.active {
   background: #fff;
   color: var(--forest);
-  box-shadow: 0 2px 8px rgba(24, 62, 52, 0.08);
+  box-shadow: 0 2px 8px rgba(55, 69, 138, 0.1);
 }
 
 .view[hidden] {
@@ -205,7 +204,7 @@ select:focus-visible {
   gap: 10px;
   padding: 12px 16px;
   background: var(--mint-soft);
-  border: 1px solid #d8eae2;
+  border: 1px solid #e0e5ff;
   border-radius: 14px;
 }
 
@@ -224,8 +223,8 @@ select:focus-visible {
   width: 9px;
   height: 9px;
   border-radius: 99px;
-  background: #3c9f78;
-  box-shadow: 0 0 0 4px rgba(60, 159, 120, 0.13);
+  background: #29b9bb;
+  box-shadow: 0 0 0 4px rgba(41, 185, 187, 0.14);
 }
 
 .parent-layout {
@@ -237,7 +236,7 @@ select:focus-visible {
 
 .chat-card {
   background: #fff;
-  border: 1px solid rgba(23, 72, 59, 0.11);
+  border: 1px solid rgba(55, 69, 138, 0.11);
   border-radius: 27px;
   box-shadow: var(--shadow);
   overflow: hidden;
@@ -286,7 +285,7 @@ select:focus-visible {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #3c9f78;
+  background: #29b9bb;
   margin-right: 4px;
 }
 
@@ -342,8 +341,8 @@ select:focus-visible {
   max-width: min(82%, 550px);
   padding: 12px 14px;
   border-radius: 6px 17px 17px 17px;
-  background: #f1f6f3;
-  color: #25443c;
+  background: #f5f7ff;
+  color: #313131;
   font-size: 14px;
   line-height: 1.52;
 }
@@ -365,7 +364,7 @@ select:focus-visible {
 .response-meta {
   margin-top: 11px;
   padding-top: 10px;
-  border-top: 1px solid #d7e4dd;
+  border-top: 1px solid #e0e5ff;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -376,7 +375,7 @@ select:focus-visible {
   border: 0;
   border-radius: 99px;
   padding: 6px 9px;
-  background: #dceee5;
+  background: #e6fbfb;
   color: var(--forest);
   font-size: 11px;
   font-weight: 700;
@@ -390,7 +389,7 @@ select:focus-visible {
 
 .why-card {
   margin-top: 11px;
-  border-top: 1px solid #d7e4dd;
+  border-top: 1px solid #e0e5ff;
   padding-top: 9px;
 }
 
@@ -417,7 +416,7 @@ select:focus-visible {
 
 .why-card dt,
 .ai-trace-card dt {
-  color: #71867e;
+  color: #66709a;
   font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
@@ -426,7 +425,7 @@ select:focus-visible {
 .why-card dd,
 .ai-trace-card dd {
   margin: 0;
-  color: #36594f;
+  color: #37458a;
   font-size: 10px;
 }
 
@@ -441,7 +440,7 @@ select:focus-visible {
 .handoff-card {
   margin-top: 11px;
   background: #fff;
-  border: 1px solid #d6e4dd;
+  border: 1px solid #e0e5ff;
   border-radius: 12px;
   padding: 11px;
 }
@@ -486,7 +485,7 @@ select:focus-visible {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #82968e;
+  background: #7b83a8;
   animation: typing 900ms infinite;
 }
 
@@ -517,11 +516,11 @@ select:focus-visible {
 
 .suggestion-button {
   flex: 0 0 auto;
-  border: 1px solid #d5e2dc;
+  border: 1px solid #e0e5ff;
   background: #fff;
   border-radius: 99px;
   padding: 7px 10px;
-  color: #36594f;
+  color: #37458a;
   font-size: 11px;
   cursor: pointer;
 }
@@ -534,7 +533,7 @@ select:focus-visible {
   display: flex;
   align-items: flex-end;
   gap: 8px;
-  border: 1.5px solid #b9ccc3;
+  border: 1.5px solid #b1baff;
   border-radius: 15px;
   padding: 7px 7px 7px 13px;
   background: #fff;
@@ -542,7 +541,7 @@ select:focus-visible {
 
 .composer:focus-within {
   border-color: var(--forest-2);
-  box-shadow: 0 0 0 3px rgba(38, 100, 84, 0.1);
+  box-shadow: 0 0 0 3px rgba(84, 99, 214, 0.1);
 }
 
 .composer textarea {
@@ -558,7 +557,7 @@ select:focus-visible {
 }
 
 .composer textarea::placeholder {
-  color: #87978f;
+  color: #8b92b0;
 }
 
 .composer button {
@@ -584,7 +583,7 @@ select:focus-visible {
 }
 
 .composer-note {
-  color: #7a8c85;
+  color: #7b83a8;
   text-align: center;
   font-size: 9px;
   margin: 7px 0 0;
@@ -596,7 +595,7 @@ select:focus-visible {
 }
 
 .side-card {
-  border: 1px solid rgba(23, 72, 59, 0.11);
+  border: 1px solid rgba(55, 69, 138, 0.11);
   border-radius: 20px;
   background: #fff;
   padding: 22px;
@@ -609,7 +608,7 @@ select:focus-visible {
 }
 
 .family-card .eyebrow {
-  color: #a9d1c0;
+  color: #b1baff;
 }
 
 .family-card h2 {
@@ -619,7 +618,7 @@ select:focus-visible {
 }
 
 .family-card > p {
-  color: #c5d8d1;
+  color: #d8ddff;
   font-size: 12px;
   margin: 0 0 22px;
 }
@@ -637,7 +636,7 @@ select:focus-visible {
 }
 
 .family-card dt {
-  color: #a9c3ba;
+  color: #b1baff;
 }
 
 .family-card dd {
@@ -680,7 +679,7 @@ select:focus-visible {
   min-height: calc(100vh - 76px);
   display: grid;
   grid-template-columns: 235px 1fr;
-  background: #f5f7f4;
+  background: #f5f7ff;
 }
 
 .staff-sidebar {
@@ -740,7 +739,7 @@ select:focus-visible {
   align-items: center;
   gap: 10px;
   padding: 10px 11px;
-  color: #5e706a;
+  color: #66709a;
   text-align: left;
   font-size: 12px;
   font-weight: 600;
@@ -771,7 +770,7 @@ select:focus-visible {
 .sidebar-footer > button {
   border: 0;
   background: transparent;
-  color: #75867f;
+  color: #66709a;
   font-size: 10px;
   padding: 10px;
   cursor: pointer;
@@ -791,8 +790,8 @@ select:focus-visible {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #d9e7f0;
-  color: #31546a;
+  background: #e5f8ff;
+  color: #37458a;
   font-size: 9px;
   font-weight: 700;
 }
@@ -847,7 +846,7 @@ select:focus-visible {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #3c9f78;
+  background: #29b9bb;
   margin-right: 4px;
 }
 
@@ -861,7 +860,7 @@ select:focus-visible {
 }
 
 .secondary-button {
-  border: 1px solid #cddbd4;
+  border: 1px solid #cdd4ff;
   background: #fff;
 }
 
@@ -920,12 +919,12 @@ select:focus-visible {
 }
 
 .metric-card > small {
-  color: #74857f;
+  color: #66709a;
   font-size: 9px;
 }
 
 .metric-card > small.positive {
-  color: #287555;
+  color: #057577;
 }
 
 .dashboard-grid {
@@ -972,7 +971,7 @@ select:focus-visible {
   gap: 10px;
   align-items: center;
   border: 0;
-  border-top: 1px solid #edf1ee;
+  border-top: 1px solid #eef1ff;
   background: transparent;
   text-align: left;
   padding: 12px 7px;
@@ -984,7 +983,7 @@ select:focus-visible {
 }
 
 .conversation-row:hover {
-  background: #f8faf8;
+  background: #f8f9ff;
 }
 
 .conversation-avatar {
@@ -993,8 +992,8 @@ select:focus-visible {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #e7edf3;
-  color: #476174;
+  background: #eef3ff;
+  color: #37458a;
   font-size: 9px;
   font-weight: 700;
 }
@@ -1034,7 +1033,7 @@ select:focus-visible {
   font-weight: 700;
   white-space: nowrap;
   background: var(--mint-soft);
-  color: #287555;
+  color: #057577;
 }
 
 .status-pill.flagged,
@@ -1049,8 +1048,8 @@ select:focus-visible {
 }
 
 .status-pill.resolved {
-  background: #e9f3ff;
-  color: #31546a;
+  background: #eef3ff;
+  color: #37458a;
 }
 
 .gap-list {
@@ -1061,7 +1060,7 @@ select:focus-visible {
   display: flex;
   align-items: flex-start;
   gap: 9px;
-  border-top: 1px solid #edf1ee;
+  border-top: 1px solid #eef1ff;
   padding: 12px 0;
 }
 
@@ -1103,7 +1102,7 @@ select:focus-visible {
 }
 
 .gap-actions span {
-  color: #81918a;
+  color: #7b83a8;
   font-size: 8px;
 }
 
@@ -1147,7 +1146,7 @@ select:focus-visible {
 
 .search-field input {
   width: min(310px, 42vw);
-  border: 1px solid #cddbd4;
+  border: 1px solid #cdd4ff;
   border-radius: 10px;
   background: #fff;
   color: var(--ink);
@@ -1230,7 +1229,7 @@ select:focus-visible {
 .detail-question {
   margin-top: 20px;
   padding: 14px;
-  background: #f5f8f6;
+  background: #f5f7ff;
   border-radius: 12px;
   font-size: 12px;
   line-height: 1.5;
@@ -1254,8 +1253,8 @@ select:focus-visible {
 }
 
 .detail-signal.resolved {
-  border-color: #c9dced;
-  background: #f2f7ff;
+  border-color: #cfdcff;
+  background: #f4f6ff;
 }
 
 .detail-signal strong {
@@ -1272,9 +1271,9 @@ select:focus-visible {
 
 .ai-trace-card {
   margin-top: 14px;
-  border: 1px solid #d5e5de;
+  border: 1px solid #e0e5ff;
   border-radius: 13px;
-  background: #f8fbf9;
+  background: #f8f9ff;
   padding: 13px;
 }
 
@@ -1289,7 +1288,7 @@ select:focus-visible {
 }
 
 .ai-trace-heading b {
-  color: #31546a;
+  color: #37458a;
   text-transform: none;
 }
 
@@ -1352,8 +1351,8 @@ select:focus-visible {
   justify-content: space-between;
   align-items: center;
   padding-top: 11px;
-  border-top: 1px solid #edf1ee;
-  color: #74857f;
+  border-top: 1px solid #eef1ff;
+  color: #66709a;
   font-size: 8px;
 }
 
@@ -1375,11 +1374,11 @@ select:focus-visible {
   border-radius: 20px;
   padding: 0;
   color: var(--ink);
-  box-shadow: 0 30px 90px rgba(19, 48, 40, 0.22);
+  box-shadow: 0 30px 90px rgba(55, 69, 138, 0.22);
 }
 
 .dialog::backdrop {
-  background: rgba(15, 37, 31, 0.45);
+  background: rgba(23, 33, 63, 0.45);
   backdrop-filter: blur(3px);
 }
 
@@ -1429,7 +1428,7 @@ select:focus-visible {
   border-top: 1px solid var(--line);
   margin-top: 18px;
   padding-top: 13px;
-  color: #74857f;
+  color: #66709a;
   font-size: 9px;
 }
 
@@ -1446,7 +1445,7 @@ select:focus-visible {
 }
 
 .linked-conversations button {
-  border: 1px solid #d8e5df;
+  border: 1px solid #e0e5ff;
   border-radius: 10px;
   background: #fff;
   color: var(--ink);
@@ -1481,7 +1480,7 @@ select:focus-visible {
 .form-fields textarea,
 .form-fields select {
   width: 100%;
-  border: 1px solid #cbd9d2;
+  border: 1px solid #cdd4ff;
   border-radius: 9px;
   padding: 10px;
   color: var(--ink);
@@ -1494,7 +1493,7 @@ select:focus-visible {
 }
 
 .form-fields label small {
-  color: #7a8b85;
+  color: #7b83a8;
   font-size: 9px;
   font-weight: 400;
 }
@@ -1502,7 +1501,7 @@ select:focus-visible {
 .ai-draft-note {
   display: grid;
   gap: 5px;
-  border: 1px solid #d6e4dd;
+  border: 1px solid #e0e5ff;
   border-radius: 12px;
   background: var(--mint-soft);
   color: var(--forest);

@@ -4,7 +4,7 @@ Prototype URL: `<paste hosted URL>`
 
 Source repo: `<paste public GitHub repo URL>`
 
-SproutDesk is a multi-tier AI Front Desk prototype for a fictional early
+brightwheel Front Desk is a multi-tier AI Front Desk prototype for a fictional early
 education center, Little Sprouts. The parent tier answers common family
 questions from center-authored sources and shows why the answer should be
 trusted: source, review date, confidence, matched terms, and decision. When the

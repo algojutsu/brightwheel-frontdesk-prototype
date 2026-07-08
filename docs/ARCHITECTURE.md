@@ -2,7 +2,7 @@
 
 ## Overview
 
-SproutDesk is a static single-page application built with semantic HTML, CSS,
+brightwheel Front Desk is a static single-page application built with semantic HTML, CSS,
 and dependency-free JavaScript.
 
 ```text
