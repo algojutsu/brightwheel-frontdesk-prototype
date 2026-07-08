@@ -488,7 +488,7 @@ function resetParentChat() {
     {
       role: "assistant",
       answer:
-        "Hi! I’m the Juniper Lane assistant. I can help with center hours, tuition, health policies, meals, and tours. What can I find for you?",
+        "Hi! I’m brightwheel Front Desk for Juniper Lane Preschool. I can help with center hours, tuition, health policies, meals, and tours. What can I find for you?",
       kind: "welcome",
     },
   ];
@@ -567,7 +567,7 @@ function renderMessages() {
               ${
                 message.sent
                   ? ""
-                  : `<button class="handoff-button" type="button" data-handoff-index="${index}">Send to Juniper Lane</button>`
+                  : `<button class="handoff-button" type="button" data-handoff-index="${index}">Send to Juniper Lane staff</button>`
               }
             </div>`
           : "";
