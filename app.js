@@ -191,7 +191,7 @@ const seedConversations = [
 
 const suggestions = [
   "Are you open on Veterans Day?",
-  "Can Maya come in with a fever?",
+  "What is the fever policy?",
   "What is lunch today?",
   "How much is infant care?",
   "How can I schedule a tour?",
@@ -221,6 +221,28 @@ const sensitiveRules = [
     emergency: true,
   },
 ];
+
+const childSpecificRule = {
+  words: [
+    "homework",
+    "assignment",
+    "worksheet",
+    "reading level",
+    "learn to read",
+    "ready for potty",
+    "potty training progress",
+    "nap today",
+    "napped today",
+    "ate today",
+    "eat today",
+    "classroom progress",
+    "development milestone",
+    "teacher said",
+  ],
+  topic: "Classroom",
+  answer:
+    "That depends on your child and classroom context, so I shouldn’t answer it from the handbook alone. SproutDesk is best for center policies; I can send this to the classroom team so a staff member can respond with the right context.",
+};
 
 const gapRules = [
   {
@@ -286,11 +308,45 @@ const gapRules = [
   },
 ];
 
+const ambiguityRules = [
+  {
+    words: ["late pickup fee", "late fee", "pickup fee", "late charge"],
+    topic: "Operations",
+    relatedSourceIds: ["hours", "tuition"],
+    answer:
+      "I found related schedule and tuition information, but I don’t see a published Little Sprouts policy for late-pickup fees. I can send this to the front desk so they can answer accurately and add the policy for next time.",
+    reason:
+      "Related sources were found, but none explicitly covers late-pickup fees.",
+  },
+  {
+    words: ["part time tuition", "part-time tuition", "part time care", "part-time care"],
+    topic: "Billing",
+    relatedSourceIds: ["tuition"],
+    answer:
+      "The tuition guide I found lists full-time monthly rates, but it does not publish part-time care or part-time tuition options. I can send this to the front desk so they can confirm availability and pricing.",
+    reason:
+      "The matching source only covers full-time tuition, so the assistant should not infer part-time pricing.",
+  },
+  {
+    words: ["drop in", "drop-in", "backup day", "one day care"],
+    topic: "Enrollment",
+    relatedSourceIds: ["tours"],
+    answer:
+      "I found enrollment information, but not a center policy for drop-in or one-day care. I can send this to the front desk so they can confirm whether that option exists.",
+    reason:
+      "The available enrollment source does not cover drop-in care.",
+  },
+];
+
 let state = loadState();
 let parentMessages = [];
 let selectedConversationId = state.conversations[1]?.id || state.conversations[0]?.id;
 let activeInboxFilter = "all";
+let conversationSearch = "";
 let toastTimer;
+
+const OPEN_STATUSES = ["escalated", "unanswered", "flagged"];
+const CLOSED_STATUSES = ["answered", "resolved"];
 
 function clone(value) {
   return JSON.parse(JSON.stringify(value));
@@ -301,6 +357,7 @@ function categoryIcon(category) {
     Schedule: "◷",
     Billing: "$",
     Health: "+",
+    Classroom: "◫",
     "Daily care": "⌁",
     Enrollment: "⌂",
     Safety: "!",
@@ -311,11 +368,13 @@ function categoryIcon(category) {
 
 function assignmentForTopic(topic, status = "answered") {
   if (status === "answered") return "Assistant resolved";
+  if (status === "resolved") return "Closed by staff";
   const assignments = {
     Billing: "Ana Morales · Admin",
     Enrollment: "Ana Morales · Enrollment",
     Health: "Ana Morales · Health & safety",
     Safety: "Ana Morales · Director only",
+    Classroom: "Blue Room teachers",
     "Daily care": "Blue Room teachers",
     Schedule: "Front desk",
     Unknown: "Front desk triage",
@@ -377,11 +436,20 @@ function escapeHtml(value = "") {
 function formatStatus(status) {
   const labels = {
     answered: "Answered",
+    resolved: "Closed with source",
     escalated: "Needs staff",
     unanswered: "Knowledge gap",
     flagged: "Review",
   };
   return labels[status] || status;
+}
+
+function isOpenStatus(status) {
+  return OPEN_STATUSES.includes(status);
+}
+
+function isClosedStatus(status) {
+  return CLOSED_STATUSES.includes(status);
 }
 
 function showToast(message) {
@@ -428,6 +496,31 @@ function renderSuggestions() {
     .join("");
 }
 
+function renderTraceItems(trace) {
+  if (!trace) return "";
+  const keywordText = trace.matchedKeywords?.length ? trace.matchedKeywords.join(", ") : "None";
+  return `
+    <dl>
+      <div><dt>Safety</dt><dd>${escapeHtml(trace.safetyCheck || "Not evaluated")}</dd></div>
+      <div><dt>Topic</dt><dd>${escapeHtml(trace.detectedTopic || "Unknown")}</dd></div>
+      <div><dt>Confidence</dt><dd>${escapeHtml(trace.confidence || "Unknown")}</dd></div>
+      <div><dt>Source</dt><dd>${escapeHtml(trace.matchedSource || "None")}</dd></div>
+      <div><dt>Keywords</dt><dd>${escapeHtml(keywordText)}</dd></div>
+      <div><dt>Decision</dt><dd>${escapeHtml(trace.decision || "Not decided")}</dd></div>
+    </dl>
+    ${trace.reason ? `<p>${escapeHtml(trace.reason)}</p>` : ""}`;
+}
+
+function renderParentWhy(message) {
+  if (!message.trace) return "";
+  const title = message.status === "answered" ? "Why this answer?" : "Why not answer directly?";
+  return `
+    <details class="why-card">
+      <summary>${escapeHtml(title)}</summary>
+      ${renderTraceItems(message.trace)}
+    </details>`;
+}
+
 function renderMessages() {
   const container = document.querySelector("#messages");
   container.innerHTML = parentMessages
@@ -468,7 +561,9 @@ function renderMessages() {
           : "";
       return `<div class="message-row assistant">
         <div class="message-avatar">S</div>
-        <div class="bubble"><p>${escapeHtml(message.answer)}</p>${meta}${handoff}</div>
+        <div class="bubble"><p>${escapeHtml(message.answer)}</p>${meta}${renderParentWhy(
+          message,
+        )}${handoff}</div>
       </div>`;
     })
     .join("");
@@ -476,7 +571,26 @@ function renderMessages() {
 }
 
 function normalizeQuestion(question) {
-  return question.toLowerCase().replace(/[^\w\s$.-]/g, " ");
+  return question
+    .toLowerCase()
+    .replace(/[^\w\s$.]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function keywordMatches(normalizedQuestion, keyword) {
+  const normalizedKeyword = normalizeQuestion(keyword);
+  if (!normalizedKeyword) return false;
+  return ` ${normalizedQuestion} `.includes(` ${normalizedKeyword} `);
+}
+
+function matchedKeywords(question, keywords) {
+  const normalized = normalizeQuestion(question);
+  return keywords.filter((keyword) => keywordMatches(normalized, keyword));
+}
+
+function keywordScore(matches) {
+  return matches.reduce((score, keyword) => score + normalizeQuestion(keyword).split(" ").length, 0);
 }
 
 function parseKeywords(value) {
@@ -530,12 +644,12 @@ function uniquePolicyId(title) {
 }
 
 function inferKnowledgeGap(conversation) {
-  if (!conversation || conversation.status === "answered") return null;
+  if (!conversation || !isOpenStatus(conversation.status)) return null;
   const normalized = normalizeQuestion(conversation.question);
   const matched = gapRules.find(
     (rule) =>
       rule.statuses.includes(conversation.status) &&
-      rule.keywords.some((keyword) => normalized.includes(keyword)),
+      rule.keywords.some((keyword) => keywordMatches(normalized, keyword)),
   );
   if (matched) return matched;
   if (conversation.status === "unanswered") {
@@ -607,9 +721,10 @@ function draftFromConversation(conversation) {
 function answerQuestion(question) {
   const normalized = normalizeQuestion(question);
   const sensitive = sensitiveRules.find((rule) =>
-    rule.words.some((word) => normalized.includes(word)),
+    rule.words.some((word) => keywordMatches(normalized, word)),
   );
   if (sensitive) {
+    const source = state.knowledge.find((item) => item.id === sensitive.sourceId);
     return {
       answer: sensitive.answer,
       sourceId: sensitive.sourceId,
@@ -617,17 +732,74 @@ function answerQuestion(question) {
       status: sensitive.emergency ? "flagged" : "escalated",
       canEscalate: !sensitive.emergency,
       emergency: Boolean(sensitive.emergency),
+      trace: {
+        safetyCheck: sensitive.emergency ? "Emergency rule triggered" : "Sensitive-topic rule triggered",
+        detectedTopic: sensitive.topic,
+        confidence: sensitive.emergency ? "Urgent" : "Needs human review",
+        matchedSource: source?.title || "None",
+        matchedKeywords: sensitive.words.filter((word) => keywordMatches(normalized, word)),
+        decision: sensitive.emergency ? "Show emergency instruction" : "Escalate to staff",
+        reason: sensitive.emergency
+          ? "The assistant should not mediate emergency situations."
+          : "The assistant should not make individualized medication, health, or safety decisions.",
+      },
+    };
+  }
+
+  const childSpecificMatches = childSpecificRule.words.filter((word) =>
+    keywordMatches(normalized, word),
+  );
+  if (childSpecificMatches.length) {
+    return {
+      answer: childSpecificRule.answer,
+      sourceId: null,
+      topic: childSpecificRule.topic,
+      status: "escalated",
+      canEscalate: true,
+      trace: {
+        safetyCheck: "Child-specific question detected",
+        detectedTopic: childSpecificRule.topic,
+        confidence: "Needs human context",
+        matchedSource: "None",
+        matchedKeywords: childSpecificMatches,
+        decision: "Escalate to classroom staff",
+        reason:
+          "The assistant is limited to handbook and center-policy questions. Individual development, homework, assignment, daily classroom, or child-specific questions need staff context.",
+      },
+    };
+  }
+
+  const ambiguous = ambiguityRules.find((rule) =>
+    rule.words.some((word) => keywordMatches(normalized, word)),
+  );
+  if (ambiguous) {
+    return {
+      answer: ambiguous.answer,
+      sourceId: null,
+      relatedSourceIds: ambiguous.relatedSourceIds,
+      topic: ambiguous.topic,
+      status: "unanswered",
+      canEscalate: true,
+      trace: {
+        safetyCheck: "No sensitive rule triggered",
+        detectedTopic: ambiguous.topic,
+        confidence: "Low",
+        matchedSource: ambiguous.relatedSourceIds
+          .map((sourceId) => state.knowledge.find((item) => item.id === sourceId)?.title)
+          .filter(Boolean)
+          .join(", "),
+        matchedKeywords: ambiguous.words.filter((word) => keywordMatches(normalized, word)),
+        decision: "Escalate instead of guessing",
+        reason: ambiguous.reason,
+      },
     };
   }
 
   const ranked = state.knowledge
-    .map((policy) => ({
-      policy,
-      score: policy.keywords.reduce(
-        (score, keyword) => score + (normalized.includes(keyword) ? keyword.split(" ").length : 0),
-        0,
-      ),
-    }))
+    .map((policy) => {
+      const matches = matchedKeywords(question, policy.keywords);
+      return { policy, matchedKeywords: matches, score: keywordScore(matches) };
+    })
     .sort((a, b) => b.score - a.score);
 
   if (ranked[0].score > 0) {
@@ -638,6 +810,15 @@ function answerQuestion(question) {
       topic: policy.category,
       status: "answered",
       canEscalate: false,
+      trace: {
+        safetyCheck: "No sensitive rule triggered",
+        detectedTopic: policy.category,
+        confidence: "High",
+        matchedSource: policy.title,
+        matchedKeywords: ranked[0].matchedKeywords,
+        decision: "Answer from center source",
+        reason: "The assistant found a reviewed Little Sprouts source with matching policy terms.",
+      },
     };
   }
 
@@ -648,6 +829,15 @@ function answerQuestion(question) {
     topic: "Unknown",
     status: "unanswered",
     canEscalate: true,
+    trace: {
+      safetyCheck: "No sensitive rule triggered",
+      detectedTopic: "Unknown",
+      confidence: "Low",
+      matchedSource: "None",
+      matchedKeywords: [],
+      decision: "Escalate and create knowledge gap",
+      reason: "No center source matched the family question closely enough to answer.",
+    },
   };
 }
 
@@ -681,6 +871,8 @@ function createEscalation(message, messageIndex) {
     status: message.status === "unanswered" ? "unanswered" : "escalated",
     answer: message.answer,
     sourceId: message.sourceId,
+    relatedSourceIds: message.relatedSourceIds || [],
+    trace: message.trace,
     createdAt: "Just now",
   });
   state.conversations.unshift(conversation);
@@ -692,16 +884,111 @@ function createEscalation(message, messageIndex) {
   showToast("Question added to the staff inbox");
 }
 
+function linkedConversations(sourceId) {
+  return state.conversations.filter((conversation) => conversation.sourceId === sourceId);
+}
+
+function policyQuestionScore(policy, question) {
+  return keywordScore(matchedKeywords(question, policy.keywords));
+}
+
+function conversationTrace(conversation, source) {
+  if (conversation?.trace) return conversation.trace;
+  const isAnswered = conversation?.status === "answered";
+  const isResolved = conversation?.status === "resolved";
+  const isSensitive = ["escalated", "flagged"].includes(conversation?.status);
+  return {
+    safetyCheck: isSensitive ? "Human-review rule applied" : "No sensitive rule recorded",
+    detectedTopic: conversation?.topic || "Unknown",
+    confidence: isAnswered || isResolved ? "High" : isSensitive ? "Needs human review" : "Low",
+    matchedSource: source?.title || "None",
+    matchedKeywords: source ? matchedKeywords(conversation?.question || "", source.keywords) : [],
+    decision: isResolved
+      ? "Closed after staff published source"
+      : isAnswered
+        ? "Answer from center source"
+        : isSensitive
+          ? "Escalate to staff"
+          : "Escalate and create knowledge gap",
+    reason: isResolved
+      ? "Staff reviewed the gap and linked this conversation to a published source."
+      : isAnswered
+        ? "The assistant found a reviewed Little Sprouts source with matching policy terms."
+        : "The assistant did not have enough safe, source-backed information to answer directly.",
+  };
+}
+
+function renderDecisionTrace(conversation, source) {
+  const trace = conversationTrace(conversation, source);
+  return `
+    <div class="ai-trace-card">
+      <div class="ai-trace-heading">
+        <span>AI decision trace</span>
+        <b>${escapeHtml(trace.confidence)}</b>
+      </div>
+      ${renderTraceItems(trace)}
+    </div>`;
+}
+
+function resolveConversationWithSource(conversation, policy, note) {
+  conversation.topic = policy.category;
+  conversation.status = "resolved";
+  conversation.sourceId = policy.id;
+  conversation.assignedTo = assignmentForTopic(policy.category, "resolved");
+  conversation.resolvedAt = "Just now";
+  conversation.resolutionNote = note;
+  conversation.answer = `Staff published “${policy.title}” so future families can receive a source-backed answer.`;
+  conversation.trace = {
+    safetyCheck: "Staff review completed",
+    detectedTopic: policy.category,
+    confidence: "High after staff approval",
+    matchedSource: policy.title,
+    matchedKeywords: matchedKeywords(conversation.question, policy.keywords),
+    decision: "Closed with new source",
+    reason: note,
+  };
+}
+
+function resolveMatchingOpenConversations(policy, excludedConversationId = null) {
+  const resolved = [];
+  state.conversations.forEach((conversation) => {
+    if (conversation.id === excludedConversationId || !isOpenStatus(conversation.status)) return;
+    if (policyQuestionScore(policy, conversation.question) === 0) return;
+    resolveConversationWithSource(
+      conversation,
+      policy,
+      `Staff published “${policy.title}” and SproutDesk linked this existing open question because its terms match the new source.`,
+    );
+    resolved.push(conversation);
+  });
+  return resolved;
+}
+
 function openSource(sourceId) {
   const source = state.knowledge.find((item) => item.id === sourceId);
   if (!source) return;
+  const linked = linkedConversations(source.id);
+  const linkedMarkup = linked.length
+    ? `<div class="linked-conversations">
+        <strong>Linked conversations</strong>
+        ${linked
+          .map(
+            (conversation) =>
+              `<button type="button" data-conversation-id="${conversation.id}" data-close-source-dialog>${escapeHtml(
+                conversation.question,
+              )}<span>${escapeHtml(formatStatus(conversation.status))}</span></button>`,
+          )
+          .join("")}
+      </div>`
+    : "";
   document.querySelector("#source-dialog-title").textContent = source.title;
   document.querySelector("#source-dialog-body").innerHTML = `
     <div class="source-summary">${escapeHtml(source.summary)}</div>
     <div class="source-details">${escapeHtml(source.details)}</div>
     <div class="source-footer"><span>${escapeHtml(source.category)}</span><span>Last reviewed ${escapeHtml(
       source.reviewedAt,
-    )}</span></div>`;
+    )}</span></div>
+    ${linkedMarkup}`;
   document.querySelector("#source-dialog").showModal();
 }
 
@@ -728,19 +1015,18 @@ function conversationRows(conversations, selected = false) {
 }
 
 function updateInboxCount() {
-  const attentionCount = state.conversations.filter((item) =>
-    ["escalated", "unanswered", "flagged"].includes(item.status),
-  ).length;
+  const attentionCount = state.conversations.filter((item) => isOpenStatus(item.status)).length;
   document.querySelector("#inbox-count").textContent = attentionCount;
 }
 
 function renderOverview() {
   const recent = state.conversations.slice(0, 4);
   const answered = state.conversations.filter((item) => item.status === "answered").length;
+  const resolved = state.conversations.filter((item) => item.status === "resolved").length;
   const total = state.conversations.length;
-  const attention = state.conversations.filter((item) => item.status !== "answered").length;
+  const attention = state.conversations.filter((item) => isOpenStatus(item.status)).length;
   const automation = total ? Math.round((answered / total) * 100) : 0;
-  const timeReturned = ((answered * 6) / 60).toFixed(1);
+  const timeReturned = ((answered * 6 + resolved * 3) / 60).toFixed(1);
   const gaps = buildKnowledgeGaps().slice(0, 4);
   document.querySelector("#overview-section").innerHTML = `
     <div class="metric-grid">
@@ -757,7 +1043,7 @@ function renderOverview() {
       <article class="metric-card">
         <div class="metric-top"><span>Time returned</span><span class="metric-icon">◷</span></div>
         <strong>${timeReturned}h</strong>
-        <small>At 6 min per resolved question</small>
+        <small>Estimate from auto answers and closed gaps</small>
       </article>
       <article class="metric-card">
         <div class="metric-top"><span>Needs attention</span><span class="metric-icon">!</span></div>
@@ -812,11 +1098,43 @@ function renderOverview() {
 }
 
 function filteredConversations() {
-  if (activeInboxFilter === "all") return state.conversations;
-  if (activeInboxFilter === "attention") {
-    return state.conversations.filter((item) => item.status !== "answered");
+  const query = normalizeQuestion(conversationSearch);
+  let conversations = state.conversations;
+  if (query) {
+    conversations = conversations.filter((conversation) => {
+      const source = state.knowledge.find((item) => item.id === conversation.sourceId);
+      const haystack = normalizeQuestion(
+        [
+          conversation.question,
+          conversation.family,
+          conversation.topic,
+          conversation.status,
+          conversation.assignedTo,
+          conversation.answer,
+          source?.title,
+        ]
+          .filter(Boolean)
+          .join(" "),
+      );
+      return haystack.includes(query);
+    });
   }
-  return state.conversations.filter((item) => item.status === "answered");
+  if (activeInboxFilter === "attention") {
+    return conversations.filter((item) => isOpenStatus(item.status));
+  }
+  if (activeInboxFilter === "answered") {
+    return conversations.filter((item) => item.status === "answered");
+  }
+  if (activeInboxFilter === "resolved") {
+    return conversations.filter((item) => item.status === "resolved");
+  }
+  return conversations;
+}
+
+function showConversation(conversationId) {
+  selectedConversationId = Number(conversationId);
+  activeInboxFilter = "all";
+  setStaffSection("inbox");
 }
 
 function renderInbox() {
@@ -824,20 +1142,32 @@ function renderInbox() {
   if (!filtered.some((item) => item.id === selectedConversationId)) {
     selectedConversationId = filtered[0]?.id;
   }
-  const selected =
-    state.conversations.find((item) => item.id === selectedConversationId) || state.conversations[0];
+  const selected = filtered.length
+    ? state.conversations.find((item) => item.id === selectedConversationId)
+    : null;
   const source = state.knowledge.find((item) => item.id === selected?.sourceId);
   document.querySelector("#inbox-section").innerHTML = `
     <div class="section-toolbar">
       <div><h2>Conversations</h2><p>Review family questions and improve weak answers.</p></div>
-      <div class="filter-row">
-        <button class="filter-button ${activeInboxFilter === "all" ? "active" : ""}" data-filter="all" type="button">All</button>
-        <button class="filter-button ${
-          activeInboxFilter === "attention" ? "active" : ""
-        }" data-filter="attention" type="button">Needs attention</button>
-        <button class="filter-button ${
-          activeInboxFilter === "answered" ? "active" : ""
-        }" data-filter="answered" type="button">Answered</button>
+      <div class="conversation-tools">
+        <label class="search-field">
+          <span class="sr-only">Search conversations</span>
+          <input id="conversation-search" value="${escapeHtml(
+            conversationSearch,
+          )}" placeholder="Search question, family, source..." />
+        </label>
+        <div class="filter-row">
+          <button class="filter-button ${activeInboxFilter === "all" ? "active" : ""}" data-filter="all" type="button">All</button>
+          <button class="filter-button ${
+            activeInboxFilter === "attention" ? "active" : ""
+          }" data-filter="attention" type="button">Needs attention</button>
+          <button class="filter-button ${
+            activeInboxFilter === "answered" ? "active" : ""
+          }" data-filter="answered" type="button">Auto-answered</button>
+          <button class="filter-button ${
+            activeInboxFilter === "resolved" ? "active" : ""
+          }" data-filter="resolved" type="button">Closed</button>
+        </div>
       </div>
     </div>
     <div class="panel inbox-layout">
@@ -860,13 +1190,19 @@ function renderInbox() {
               <div class="detail-answer"><strong>SproutDesk response</strong><br>${escapeHtml(
                 selected.answer,
               )}</div>
+              ${renderDecisionTrace(selected, source)}
               ${
-                selected.status !== "answered"
+                isOpenStatus(selected.status)
                   ? `<div class="detail-signal"><strong>Why this needs attention</strong><p>${
                       selected.status === "unanswered"
                         ? "No published center source supported a confident answer. Add or update a policy to close this gap."
                         : "This question may involve an individual health or safety decision, so the assistant deferred to staff."
                     }</p></div>`
+                  : selected.status === "resolved"
+                    ? `<div class="detail-signal resolved"><strong>Closed with new source</strong><p>${escapeHtml(
+                        selected.resolutionNote ||
+                          "Staff linked this conversation to a published source so future families can get a grounded answer.",
+                      )}</p></div>`
                   : ""
               }
               ${
@@ -942,6 +1278,8 @@ function openEditPolicy(policyId) {
   const policy = state.knowledge.find((item) => item.id === policyId);
   if (!policy) return;
   document.querySelector("#edit-dialog-title").textContent = "Edit policy";
+  document.querySelector("#edit-draft-note").hidden = true;
+  document.querySelector("#edit-draft-note").innerHTML = "";
   document.querySelector("#edit-policy-id").value = policy.id;
   document.querySelector("#edit-policy-conversation-id").value = "";
   document.querySelector("#edit-policy-title").value = policy.title;
@@ -954,6 +1292,8 @@ function openEditPolicy(policyId) {
 
 function openBlankPolicy() {
   document.querySelector("#edit-dialog-title").textContent = "Add source";
+  document.querySelector("#edit-draft-note").hidden = true;
+  document.querySelector("#edit-draft-note").innerHTML = "";
   document.querySelector("#edit-policy-id").value = "";
   document.querySelector("#edit-policy-conversation-id").value = "";
   document.querySelector("#edit-policy-title").value = "";
@@ -969,7 +1309,12 @@ function openDraftPolicyFromConversation(conversationId) {
   if (!conversation) return;
   const draft = draftFromConversation(conversation);
   setStaffSection("knowledge");
-  document.querySelector("#edit-dialog-title").textContent = "Draft source from question";
+  document.querySelector("#edit-dialog-title").textContent = "AI-generated draft";
+  document.querySelector("#edit-draft-note").hidden = false;
+  document.querySelector("#edit-draft-note").innerHTML = `
+    <strong>Review before publishing</strong>
+    <span>SproutDesk drafted this source from: “${escapeHtml(conversation.question)}”</span>
+    <span>Extracted keywords: ${escapeHtml(draft.keywords.join(", ") || "None")}</span>`;
   document.querySelector("#edit-policy-id").value = "";
   document.querySelector("#edit-policy-conversation-id").value = conversation.id;
   document.querySelector("#edit-policy-title").value = draft.title;
@@ -984,6 +1329,7 @@ function savePolicy(event) {
   event.preventDefault();
   const id = document.querySelector("#edit-policy-id").value;
   const conversationId = Number(document.querySelector("#edit-policy-conversation-id").value);
+  const isNewPolicy = !id;
   const title = document.querySelector("#edit-policy-title").value.trim();
   const category = document.querySelector("#edit-policy-category").value;
   const summary = document.querySelector("#edit-policy-summary").value.trim();
@@ -1014,21 +1360,34 @@ function savePolicy(event) {
     policy.keywords = keywords.length ? keywords : keywordsFromText(`${title} ${summary}`);
   }
   policy.reviewedAt = "Just now";
+  let autoResolvedCount = 0;
   if (conversationId) {
     const conversation = state.conversations.find((item) => item.id === conversationId);
     if (conversation) {
-      conversation.topic = policy.category;
-      conversation.status = "answered";
-      conversation.sourceId = policy.id;
-      conversation.assignedTo = assignmentForTopic(policy.category, "answered");
-      conversation.answer = `Staff published “${policy.title}” so future families can receive a source-backed answer.`;
+      resolveConversationWithSource(
+        conversation,
+        policy,
+        `Staff reviewed this unsupported question and published “${policy.title}” as the source of truth.`,
+      );
       selectedConversationId = conversation.id;
     }
+  }
+  if (isNewPolicy) {
+    autoResolvedCount = resolveMatchingOpenConversations(policy, conversationId || null).length;
+  }
+  if (conversationId) {
+    activeInboxFilter = "all";
   }
   saveState();
   document.querySelector("#edit-dialog").close();
   renderStaff();
-  showToast(id ? "Policy published — future answers are updated" : "Source published — gap closed");
+  if (conversationId) {
+    setStaffSection("inbox");
+  }
+  const linkedMessage = autoResolvedCount
+    ? ` Source linked to ${autoResolvedCount} other open conversation${autoResolvedCount === 1 ? "" : "s"}.`
+    : "";
+  showToast(id ? "Policy published — future answers are updated" : `Source published — gap closed.${linkedMessage}`);
 }
 
 document.querySelectorAll(".switch-button").forEach((button) => {
@@ -1107,6 +1466,21 @@ document.querySelector(".staff-main").addEventListener("click", (event) => {
 
   const editButton = event.target.closest("[data-edit-id]");
   if (editButton) openEditPolicy(editButton.dataset.editId);
+});
+
+document.querySelector(".staff-main").addEventListener("input", (event) => {
+  if (event.target.matches("#conversation-search")) {
+    conversationSearch = event.target.value;
+    renderInbox();
+    document.querySelector("#conversation-search")?.focus();
+  }
+});
+
+document.querySelector("#source-dialog-body").addEventListener("click", (event) => {
+  const conversationButton = event.target.closest("[data-conversation-id]");
+  if (!conversationButton) return;
+  document.querySelector("#source-dialog").close();
+  showConversation(conversationButton.dataset.conversationId);
 });
 
 document.querySelectorAll(".dialog-close").forEach((button) => {

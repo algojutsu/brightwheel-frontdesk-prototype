@@ -14,6 +14,7 @@ without network access once the files are available.
 
 - A mobile-first parent assistant with guided prompts and free-text questions
 - Center-specific answers with visible sources and review dates
+- Parent-facing “why this answer” traces for source, confidence, and decision
 - Explicit uncertainty handling and human escalation
 - Topic-aware staff routing for admin, teacher, front desk, and safety handoffs
 - A staff control center showing demand, unresolved questions, and dynamic knowledge gaps
@@ -46,14 +47,16 @@ recommended.
 
 1. Start in **Parent view** and ask “Can Maya come in with a fever?”
 2. Open the cited Health & wellness source.
-3. Ask “Can you give Maya medicine?” to see a sensitive-question handoff.
-4. Ask an unsupported question such as “Do you offer weekend care?” and send it
+3. Open **Why this answer?** to see the simulated AI decision trace.
+4. Ask “When will my kid learn to read?” to see a child-specific classroom handoff.
+5. Ask “Can you give Maya medicine?” to see a sensitive-question handoff.
+6. Ask an unsupported question such as “Do you offer weekend care?” and send it
    to the center.
-5. Switch to **Staff view** and inspect how the conversation is routed and
+7. Switch to **Staff view** and inspect how the conversation is routed and
    surfaced in the knowledge-gap queue.
-6. Click **Draft source from question**, review the prefilled weekend-care
+8. Click **Draft source from question**, review the prefilled weekend-care
    policy, and save it.
-7. Return to Parent view and ask about weekend care again. The next answer uses
+9. Return to Parent view and ask about weekend care again. The next answer uses
    the newly published source.
 
 ## Hosting
@@ -95,6 +98,8 @@ access to the owner's external hosting account.
 
 - The answer engine is deterministic and intent-based, not a live LLM or RAG
   service.
+- AI behavior is simulated through visible safety checks, source matching,
+  confidence states, and review-required draft generation.
 - Data persists only in the current browser through `localStorage`.
 - “Send to center” creates an in-app escalation; it does not send a real message.
 - Staff publishing a new source updates prototype state immediately; production

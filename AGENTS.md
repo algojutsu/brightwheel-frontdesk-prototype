@@ -51,12 +51,17 @@ The `osascript` check is used because this environment may not have `node`.
 
 1. Parent asks a covered question, such as fever, lunch, tuition, hours, or tour.
 2. Assistant returns a concise answer with a source and reviewed date.
-3. Parent asks a sensitive medication/custody/emergency question.
-4. Assistant escalates instead of making a high-consequence decision.
-5. Parent asks an unsupported question, such as weekend care.
-6. Staff sees a routed conversation and dynamic knowledge gap.
-7. Staff drafts/publishes a source from the question.
-8. The next matching parent question uses the newly published source.
+3. Parent opens the AI trace to see confidence, source, matched terms, and
+   decision.
+4. Parent asks a child-specific classroom/progress/homework question.
+5. Assistant defers to staff instead of answering from the handbook.
+6. Parent asks a sensitive medication/custody/emergency question.
+7. Assistant escalates instead of making a high-consequence decision.
+8. Parent asks an unsupported question, such as weekend care.
+9. Staff sees a routed conversation and dynamic knowledge gap.
+10. Staff drafts/publishes a source from the question.
+11. The original conversation stays findable as `Closed with source`.
+12. The next matching parent question uses the newly published source.
 
 ## Known local artifact
 

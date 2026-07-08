@@ -62,6 +62,19 @@ three understandable states:
 
 The staff view can see these states and their underlying signals.
 
+The prototype also exposes a lightweight AI decision trace. Parents can open
+“Why this answer?” to see source, confidence, matched terms, and decision. Staff
+see the same trace in each conversation detail. This makes the AI factor visible
+without pretending a live model is running.
+
+### Policy questions stay separate from child-specific questions
+
+SproutDesk is meant for handbook and center-policy questions. A question like
+“Can Maya come with a fever?” still receives the fever policy because it asks a
+general attendance rule using a child’s name. A question like “When will my kid
+learn to read?”, “What did Maya eat today?”, or a homework/assignment question
+requires child or classroom context and is routed to staff.
+
 ### Sources are first-class
 
 Source chips open the exact center policy used for an answer. This makes
@@ -106,10 +119,11 @@ proprietary data.
 
 1. An unsupported question produces an honest limitation and escalation option.
 2. The conversation appears in the staff inbox and dynamic gap queue.
-3. Staff opens a prefilled policy draft from the question.
+3. Staff opens an AI-labeled, prefilled policy draft from the question.
 4. Publishing the source closes the gap and links the original conversation to
    the new source.
-5. Future matching questions use the improved knowledge.
+5. The original conversation remains searchable as “Closed with source.”
+6. Future matching questions use the improved knowledge.
 
 ## Visual direction
 

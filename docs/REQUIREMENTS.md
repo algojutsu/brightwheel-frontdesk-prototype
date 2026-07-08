@@ -65,6 +65,8 @@ The standalone assignment capture is maintained in
 
 - A grounded answer must identify its source.
 - Health and medication responses must not present medical judgment.
+- Individual child progress, homework, assignment, daily-status, or classroom
+  context questions must route to staff instead of receiving a handbook answer.
 - Low-confidence or uncovered questions must explicitly state the limitation.
 - Escalation must be an intentional product state, not a generic error.
 - The system must never use real personal data; all names and policies are

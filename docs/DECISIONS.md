@@ -86,3 +86,36 @@ Reasoning:
 Tradeoff:
 
 - Typography is less custom than using hosted web fonts.
+
+## 7. Make simulated AI behavior inspectable
+
+Decision: show deterministic AI traces instead of adding a real LLM call.
+
+Reasoning:
+
+- The user explicitly does not want a backend LLM/API dependency.
+- The reviewer should still see the AI product behavior: safety checks, source
+  matching, confidence boundaries, matched terms, and escalation decisions.
+
+Tradeoff:
+
+- The app remains a prototype simulation. It demonstrates intended AI behavior
+  and workflow, not model quality.
+
+## 8. Separate policy questions from child-specific questions
+
+Decision: answer handbook/policy questions even if they include a child name,
+but defer individual child progress, homework, assignment, and daily-status
+questions to staff.
+
+Reasoning:
+
+- "Can Maya come with a fever?" is effectively asking for the fever attendance
+  policy and should be answered from the handbook.
+- "When will my kid learn to read?" depends on individual development and
+  classroom context, so the assistant should not guess.
+
+Tradeoff:
+
+- This boundary is still rule-based in the prototype. Production would need more
+  robust classification and evaluation.

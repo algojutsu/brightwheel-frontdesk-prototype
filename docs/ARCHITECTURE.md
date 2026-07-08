@@ -10,6 +10,7 @@ UI events
   ├─ parent question → intent and safety rules → source-backed response
   ├─ escalation → local conversation store → staff inbox, routing, and metrics
   ├─ knowledge gap → prefilled source draft → local knowledge store
+  ├─ policy creation → matching open gaps → closed linked conversations
   └─ policy edit or creation → subsequent answer behavior
 ```
 
@@ -47,6 +48,9 @@ This is a prototype decision, not the recommended production architecture.
 - `sourceId`
 - `createdAt`
 - `assignedTo`
+- `trace`
+- optional `resolvedAt`
+- optional `resolutionNote`
 
 ### UI state
 
@@ -76,11 +80,20 @@ The engine follows ordered rules:
 
 1. Detect sensitive subjects such as medication, custody, emergencies, and
    individualized medical advice.
-2. Match supported intents using normalized keyword groups.
-3. Apply intent-specific response composition from the matching policy.
-4. Return an unsupported result when no source reaches the match threshold.
-5. Classify unresolved or sensitive conversations into knowledge gaps for the
+2. Detect child-specific classroom, development, homework, assignment, or daily
+   child-status questions that need staff context.
+3. Detect known ambiguous questions where related sources exist but no exact
+   policy exists.
+4. Match supported intents using normalized keyword groups with word/phrase
+   boundaries.
+5. Apply intent-specific response composition from the matching policy.
+6. Return an unsupported result when no source reaches the match threshold.
+7. Classify unresolved or sensitive conversations into knowledge gaps for the
    staff control center.
+
+Every response includes a deterministic `trace` object with safety check,
+detected topic, confidence, matched source, matched keywords, decision, and
+reason. This is an AI-prototype affordance, not a live model call.
 
 This emulates the product behavior of a grounded AI system while keeping the
 exercise inspectable. A production service would use hybrid retrieval, structured

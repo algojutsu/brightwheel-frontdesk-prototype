@@ -57,3 +57,16 @@ remain fictional. If adding examples, preserve this pattern.
 The most complete demo path depends on weekend care being unsupported until the
 staff user publishes a new source. Avoid adding weekend-care coverage to seed
 knowledge unless the demo script is updated.
+
+## Avoid substring keyword matches
+
+Observed issue: the health keyword `ill` matched inside the word `will`, causing
+`When will my kid learn to read?` to incorrectly return the fever policy.
+
+Correction: keyword matching must use normalized word/phrase boundaries. Keep
+regression coverage for:
+
+- `Can Maya come with a fever?` → Health policy answer.
+- `When will my kid learn to read?` → Classroom staff handoff.
+- `What did Maya eat today?` → Classroom staff handoff.
+- `What is lunch today?` → Meals policy answer.

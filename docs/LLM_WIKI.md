@@ -61,9 +61,10 @@ When docs disagree, use this order:
 The prototype has two perspectives:
 
 - Parent view: prompt chips, free-text question input, source-backed answers,
-  honest unsupported states, and handoff cards.
+  parent-visible AI traces, honest unsupported states, and handoff cards.
 - Staff view: overview metrics, conversations, assignment/routing, dynamic
-  knowledge gaps, source editing, source creation, and reset.
+  knowledge gaps, AI decision traces, source editing, source creation, closed
+  source-linked conversations, and reset.
 
 The key differentiator is the closed loop:
 
@@ -79,8 +80,11 @@ family question → grounded answer or escalation → staff signal
 1. Confirm the behavior is consistent with [Requirements](REQUIREMENTS.md).
 2. Update seed data or answer rules in `app.js`.
 3. Preserve sensitive-topic escalation before keyword matching.
-4. Update docs if behavior changes.
-5. Run checks in [Operations](OPERATIONS.md).
+4. Preserve the handbook boundary: generic policy questions can mention a child
+   name, but child-specific progress, homework, assignment, or daily-status
+   questions must defer to staff.
+5. Update docs if behavior changes.
+6. Run checks in [Operations](OPERATIONS.md).
 
 ### Change visual design
 

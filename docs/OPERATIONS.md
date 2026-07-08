@@ -72,14 +72,21 @@ PY
 
 1. Parent view: ask `Can Maya come in with a fever?`
 2. Open the Health & wellness source chip.
-3. Ask `Can you give Maya medicine?`
-4. Confirm the assistant escalates instead of deciding dosage.
-5. Ask `Do you offer weekend care?`
-6. Send the question to Little Sprouts.
-7. Staff view: inspect the conversation, assignment, and knowledge-gap queue.
-8. Click `Draft source from question`.
-9. Publish the prefilled weekend-care source.
-10. Parent view: ask about weekend care again and confirm the new source-backed
+3. Open `Why this answer?` to inspect the simulated AI trace.
+4. Ask `When will my kid learn to read?`
+5. Confirm the assistant defers to classroom staff because the question depends
+   on child-specific context.
+6. Ask `Can you give Maya medicine?`
+7. Confirm the assistant escalates instead of deciding dosage.
+8. Ask `Do you offer weekend care?`
+9. Send the question to Little Sprouts.
+10. Staff view: inspect the conversation, assignment, AI trace, and
+    knowledge-gap queue.
+11. Click `Draft source from question`.
+12. Publish the prefilled weekend-care source.
+13. Confirm the original conversation remains findable under the `Closed`
+    filter and from the linked source.
+14. Parent view: ask about weekend care again and confirm the new source-backed
     answer appears.
 
 ## GitHub Pages deployment
