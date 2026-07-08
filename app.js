@@ -1,4 +1,4 @@
-const STORAGE_KEY = "brightwheel-frontdesk-demo-v1";
+const STORAGE_KEY = "brightwheel-frontdesk-demo-v2";
 
 const seedKnowledge = [
   {
@@ -7,7 +7,7 @@ const seedKnowledge = [
     category: "Schedule",
     icon: "◷",
     summary:
-      "Little Sprouts is open Monday–Friday, 7:30 AM–6:00 PM. We are closed on Veterans Day, November 11.",
+      "Juniper Lane is open Monday–Friday, 7:30 AM–6:00 PM. We are closed on Veterans Day, November 11.",
     details:
       "Regular hours are Monday through Friday, 7:30 AM to 6:00 PM.\n\n2026 closures include New Year’s Day, Martin Luther King Jr. Day, Memorial Day, Independence Day (observed), Labor Day, Veterans Day, Thanksgiving and the following Friday, and December 24–25.\n\nWeather-related changes are sent through the family app by 6:30 AM.",
     reviewedAt: "Jun 18, 2026",
@@ -124,7 +124,7 @@ const seedConversations = [
     topic: "Schedule",
     status: "answered",
     answer:
-      "No. Little Sprouts is closed on Veterans Day, November 11, and returns to regular hours the next weekday.",
+      "No. Juniper Lane is closed on Veterans Day, November 11, and returns to regular hours the next weekday.",
     sourceId: "hours",
     createdAt: "Today, 8:42 AM",
   },
@@ -217,7 +217,7 @@ const sensitiveRules = [
     topic: "Emergency",
     sourceId: null,
     answer:
-      "This may be an emergency. Call 911 now. After emergency help is on the way, contact Little Sprouts at (503) 555-0148.",
+      "This may be an emergency. Call 911 now. After emergency help is on the way, contact Juniper Lane at (503) 555-0148.",
     emergency: true,
   },
 ];
@@ -273,9 +273,9 @@ const gapRules = [
     draft: {
       title: "Weekend & backup care",
       summary:
-        "Little Sprouts does not offer weekend care. Regular care is Monday–Friday, and families can ask the director about local backup-care resources.",
+        "Juniper Lane does not offer weekend care. Regular care is Monday–Friday, and families can ask the director about local backup-care resources.",
       details:
-        "Care is offered Monday through Friday during regular center hours. Little Sprouts does not operate weekend classrooms.\n\nFamilies who need backup care may contact the center director for local referral resources. Referral information is not a guarantee of availability or enrollment.",
+        "Care is offered Monday through Friday during regular center hours. Juniper Lane does not operate weekend classrooms.\n\nFamilies who need backup care may contact the center director for local referral resources. Referral information is not a guarantee of availability or enrollment.",
       keywords: ["weekend", "saturday", "sunday", "backup care", "after hours"],
     },
   },
@@ -331,7 +331,7 @@ const ambiguityRules = [
     topic: "Operations",
     relatedSourceIds: ["hours", "tuition"],
     answer:
-      "I found related schedule and tuition information, but I don’t see a published Little Sprouts policy for late-pickup fees. I can send this to the front desk so they can answer accurately and add the policy for next time.",
+      "I found related schedule and tuition information, but I don’t see a published Juniper Lane policy for late-pickup fees. I can send this to the front desk so they can answer accurately and add the policy for next time.",
     reason:
       "Related sources were found, but none explicitly covers late-pickup fees.",
   },
@@ -488,7 +488,7 @@ function resetParentChat() {
     {
       role: "assistant",
       answer:
-        "Hi! I’m the Little Sprouts assistant. I can help with center hours, tuition, health policies, meals, and tours. What can I find for you?",
+        "Hi! I’m the Juniper Lane assistant. I can help with center hours, tuition, health policies, meals, and tours. What can I find for you?",
       kind: "welcome",
     },
   ];
@@ -567,7 +567,7 @@ function renderMessages() {
               ${
                 message.sent
                   ? ""
-                  : `<button class="handoff-button" type="button" data-handoff-index="${index}">Send to Little Sprouts</button>`
+                  : `<button class="handoff-button" type="button" data-handoff-index="${index}">Send to Juniper Lane</button>`
               }
             </div>`
           : "";
@@ -843,14 +843,14 @@ function answerQuestion(question) {
         matchedSource: policy.title,
         matchedKeywords: ranked[0].matchedKeywords,
         decision: "Answer from center source",
-        reason: "The assistant found a reviewed Little Sprouts source with matching policy terms.",
+        reason: "The assistant found a reviewed Juniper Lane source with matching policy terms.",
       },
     };
   }
 
   return {
     answer:
-      "I couldn’t find a Little Sprouts policy that answers that, and I don’t want to guess. I can send your question to the front desk so the team can answer and improve this for next time.",
+      "I couldn’t find a Juniper Lane policy that answers that, and I don’t want to guess. I can send your question to the front desk so the team can answer and improve this for next time.",
     sourceId: null,
     topic: "Unknown",
     status: "unanswered",
@@ -939,7 +939,7 @@ function conversationTrace(conversation, source) {
     reason: isResolved
       ? "Staff reviewed the gap and linked this conversation to a published source."
       : isAnswered
-        ? "The assistant found a reviewed Little Sprouts source with matching policy terms."
+        ? "The assistant found a reviewed Juniper Lane source with matching policy terms."
         : "The assistant did not have enough safe, source-backed information to answer directly.",
   };
 }

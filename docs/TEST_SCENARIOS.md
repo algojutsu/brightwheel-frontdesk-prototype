@@ -25,7 +25,7 @@ engine.
 ## Staff workflow regression set
 
 1. Ask `Do you offer weekend care?` in Parent view.
-2. Click `Send to Little Sprouts`.
+2. Click `Send to Juniper Lane`.
 3. Switch to Staff view.
 4. Confirm the conversation appears in Conversations and the knowledge-gap queue.
 5. Confirm the staff detail shows:

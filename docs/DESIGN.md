@@ -6,8 +6,8 @@ The valuable product is not a chatbot that always answers. It is a front desk
 that resolves routine demand, proves where an answer came from, and converts
 uncertainty into a manageable staff workflow.
 
-The prototype is called **brightwheel Front Desk** and uses the fictional **Little Sprouts
-Early Learning** center.
+The prototype is called **brightwheel Front Desk** and uses the fictional
+**Juniper Lane Preschool** center.
 
 In production, brightwheel Front Desk should be a capability inside brightwheel rather than
 a new standalone destination. Brightwheel already has the center, classroom,

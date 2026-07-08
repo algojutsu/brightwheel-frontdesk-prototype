@@ -21,7 +21,7 @@ For most tasks:
 ## Canonical project facts
 
 - App name: brightwheel Front Desk.
-- Fictional center: Little Sprouts Early Learning.
+- Fictional center: Juniper Lane Preschool.
 - Assignment target: brightwheel AI Front Desk take-home prototype.
 - Implementation: static HTML, CSS, and dependency-free JavaScript.
 - Runtime persistence: browser `localStorage`.

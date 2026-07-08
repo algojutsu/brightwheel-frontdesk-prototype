@@ -71,8 +71,8 @@ The prototype should make these outcomes visibly different:
 
 ## Current solution summary
 
-brightwheel Front Desk is a static single-page app for a fictional center, Little Sprouts
-Early Learning. It includes:
+brightwheel Front Desk is a static single-page app for a fictional center,
+Juniper Lane Preschool. It includes:
 
 - parent assistant with free-text and guided prompts;
 - source-backed answers for hours, tuition, health, meals, and tours;

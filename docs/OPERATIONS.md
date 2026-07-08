@@ -82,7 +82,7 @@ PY
 6. Ask `Can you give Maya medicine?`
 7. Confirm the assistant escalates instead of deciding dosage.
 8. Ask `Do you offer weekend care?`
-9. Send the question to Little Sprouts.
+9. Send the question to Juniper Lane.
 10. Staff view: inspect the conversation, assignment, AI trace, and
     knowledge-gap queue.
 11. Click `Draft source from question`.
