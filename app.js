@@ -1317,7 +1317,10 @@ function renderStaff() {
 
 function setStaffSection(section) {
   const labels = {
-    overview: ["Good morning, Ana", "Here’s how brightwheel Front Desk is helping families this week."],
+    overview: [
+      "Good morning, Ana",
+      "Here’s how brightwheel Front Desk is helping Juniper Lane Preschool families this week.",
+    ],
     inbox: ["Family conversations", "Review where the assistant answered, deferred, or struggled."],
     knowledge: ["Center knowledge", "Keep family answers accurate and up to date."],
   };
