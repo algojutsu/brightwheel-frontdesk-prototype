@@ -42,6 +42,7 @@ LLM_WIKI.md
 ├── ARCHITECTURE.md            implementation model, data, answer engine
 ├── OPERATIONS.md              run, validate, demo, host
 ├── DECISIONS.md               durable product/technical decisions
+├── TEST_SCENARIOS.md          regression questions and expected outcomes
 ├── ERROR_BOOK.md              known traps and how to avoid repeating them
 └── SUBMISSION.md              concise reviewer-facing summary
 ```
@@ -98,7 +99,8 @@ family question → grounded answer or escalation → staff signal
 1. Confirm [Submission summary](SUBMISSION.md) matches current behavior.
 2. Run the quick checks in [Operations](OPERATIONS.md).
 3. Ensure `git status --short --ignored` has no untracked publishable files.
-4. Host through GitHub Pages, Netlify Drop, or Vercel.
+4. Run or manually check [Test scenarios](TEST_SCENARIOS.md).
+5. Host through GitHub Pages, Netlify Drop, or Vercel.
 
 ## Open product questions
 

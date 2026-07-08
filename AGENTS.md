@@ -40,6 +40,9 @@ osascript -l JavaScript -e 'ObjC.import("Foundation"); var s=$.NSString.stringWi
 
 The `osascript` check is used because this environment may not have `node`.
 
+Product-level regression questions are captured in
+[docs/TEST_SCENARIOS.md](docs/TEST_SCENARIOS.md).
+
 ## Code map
 
 - `index.html` — static shell and dialogs.

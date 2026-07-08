@@ -26,6 +26,9 @@ git diff --check
 curl -I --max-time 5 http://127.0.0.1:8788/
 ```
 
+For product-level regression coverage, use
+[Test scenarios](TEST_SCENARIOS.md).
+
 Syntax-check JavaScript on macOS without Node:
 
 ```bash

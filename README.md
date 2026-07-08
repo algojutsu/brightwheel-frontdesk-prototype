@@ -27,7 +27,7 @@ For agent-readable context, start with [AGENTS.md](AGENTS.md) and
 [Market and domain context](docs/MARKET_CONTEXT.md),
 [Product and UX design](docs/DESIGN.md), [Technical architecture](docs/ARCHITECTURE.md),
 [Operations](docs/OPERATIONS.md), [Decision log](docs/DECISIONS.md),
-[Error book](docs/ERROR_BOOK.md), and the concise
+[Test scenarios](docs/TEST_SCENARIOS.md), [Error book](docs/ERROR_BOOK.md), and the concise
 [Submission summary](docs/SUBMISSION.md).
 
 ## Run locally
@@ -89,6 +89,7 @@ access to the owner's external hosting account.
 │   ├── ARCHITECTURE.md
 │   ├── OPERATIONS.md
 │   ├── DECISIONS.md
+│   ├── TEST_SCENARIOS.md
 │   ├── ERROR_BOOK.md
 │   └── SUBMISSION.md
 └── README.md
