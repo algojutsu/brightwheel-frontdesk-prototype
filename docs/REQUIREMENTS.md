@@ -21,7 +21,7 @@ The standalone assignment capture is maintained in
 
 ### Center administrator
 
-- Maintain the center's source of truth without technical help.
+- Maintain the center's handbook and policy knowledge without technical help.
 - See what families ask and which answers are weak or unresolved.
 - Improve future answers with a small, clear action.
 - Retain control over sensitive or exceptional cases.

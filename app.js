@@ -1440,7 +1440,7 @@ function savePolicy(event) {
       resolveConversationWithSource(
         conversation,
         policy,
-        `Staff reviewed this unsupported question and published “${policy.title}” as the source of truth.`,
+        `Staff reviewed this unsupported question and published “${policy.title}” as the school's handbook or policy reference.`,
       );
       selectedConversationId = conversation.id;
     }

@@ -70,3 +70,22 @@ regression coverage for:
 - `When will my kid learn to read?` → Classroom staff handoff.
 - `What did Maya eat today?` → Classroom staff handoff.
 - `What is lunch today?` → Meals source answer.
+
+## Keep daily-update matching separate from child-specific questions
+
+Observed issue: broad daily-update keywords can accidentally swallow questions
+that should route elsewhere. For example, `schedule` can appear in both `What is
+the schedule today?` and `How can I schedule a tour?`; activity/program words
+can also appear in child-specific questions such as `Can Maya join soccer
+enrichment?`.
+
+Correction: use phrase-specific daily-update keywords and run child-specific
+context detection before generic daily-update matching.
+
+Keep regression coverage for:
+
+- `What activities are planned today?` → Daily update answer.
+- `What is the schedule today?` → Daily update answer.
+- `How can I schedule a tour?` → Tour source answer.
+- `Can Maya join soccer enrichment?` → Classroom staff handoff.
+- `What activities did Maya do today?` → Classroom staff handoff.

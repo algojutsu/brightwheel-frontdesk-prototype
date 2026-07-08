@@ -76,40 +76,39 @@ PY
 1. Parent view: ask `Can Maya come in with a fever?`
 2. Open the Health & wellness source chip.
 3. Open `Why this answer?` to inspect the simulated AI trace.
-4. Ask `When will my kid learn to read?`
-5. Confirm the assistant defers to classroom staff because the question depends
+4. Ask `What activities are planned today?`
+5. Confirm the assistant answers from Juniper Lane's daily update.
+6. Ask `Can Maya join soccer enrichment?`
+7. Confirm the assistant defers because the question asks about one child's
+   participation.
+8. Ask `When will my kid learn to read?`
+9. Confirm the assistant defers to classroom staff because the question depends
    on child-specific context.
-6. Ask `Can you give Maya medicine?`
-7. Confirm the assistant escalates instead of deciding dosage.
-8. Ask `Do you offer weekend care?`
-9. Send the question to Juniper Lane staff.
-10. Staff view: inspect the conversation, assignment, AI trace, and
+10. Ask `Can you give Maya medicine?`
+11. Confirm the assistant escalates instead of deciding dosage.
+12. Ask `Do you offer weekend care?`
+13. Send the question to Juniper Lane staff.
+14. Staff view: inspect the conversation, assignment, AI trace, and
     knowledge-gap queue.
-11. Click `Draft source from question`.
-12. Publish the prefilled weekend-care source.
-13. Confirm the original conversation remains findable under the `Closed`
+15. Click `Draft source from question`.
+16. Publish the prefilled weekend-care source.
+17. Confirm the original conversation remains findable under the `Closed`
     filter and from the linked source.
-14. Parent view: ask about weekend care again and confirm the new source-backed
+18. Parent view: ask about weekend care again and confirm the new source-backed
     answer appears.
 
-## GitHub Pages deployment
+## Current deployment
 
-This repo is static and can be hosted directly from the repository root.
+This repo is static and is currently hosted from the repository root on GitHub
+Pages.
 
-Recommended flow after pushing to GitHub:
+- Hosted prototype:
+  `https://algojutsu.github.io/brightwheel-frontdesk-prototype/`
+- Public repository:
+  `https://github.com/algojutsu/brightwheel-frontdesk-prototype`
 
-1. Open the GitHub repository.
-2. Go to `Settings` → `Pages`.
-3. Source: `Deploy from a branch`.
-4. Branch: `main`.
-5. Folder: `/ (root)`.
-6. Save.
-
-The deployed URL should follow:
-
-```text
-https://<github-username>.github.io/<repo-name>/
-```
+If the repository is moved or recreated, host from `main` → `/ (root)` because
+`index.html`, `styles.css`, and `app.js` live at the app root.
 
 ## Pre-public checklist
 

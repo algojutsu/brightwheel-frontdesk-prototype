@@ -1,8 +1,8 @@
 # LLM wiki
 
-This is the compiled project memory for brightwheel Front Desk. It is structured so an LLM
-agent can quickly load the minimum context needed for a task, then follow links
-to deeper pages.
+This is the compiled project memory for brightwheel Front Desk. It is
+structured so an LLM agent can quickly load the minimum context needed for a
+task, then follow links to deeper pages.
 
 ## How to read this wiki
 
@@ -26,6 +26,10 @@ For most tasks:
 - Implementation: static HTML, CSS, and dependency-free JavaScript.
 - Runtime persistence: browser `localStorage`.
 - Deployment target: static hosting from repo root, especially GitHub Pages.
+- Hosted prototype:
+  `https://algojutsu.github.io/brightwheel-frontdesk-prototype/`.
+- Public repository:
+  `https://github.com/algojutsu/brightwheel-frontdesk-prototype`.
 - Data policy: fictional data only; no real child, parent, staff, or center
   records.
 - Product stance: a useful AI front desk should answer routine questions from
@@ -47,7 +51,7 @@ LLM_WIKI.md
 └── SUBMISSION.md              concise reviewer-facing summary
 ```
 
-## Source-of-truth hierarchy
+## Authority hierarchy
 
 When docs disagree, use this order:
 
@@ -62,7 +66,9 @@ When docs disagree, use this order:
 The prototype has two perspectives:
 
 - Parent view: prompt chips, free-text question input, source-backed answers,
-  parent-visible AI traces, honest unsupported states, and handoff cards.
+  parent-visible AI traces, honest unsupported states, handoff cards, and
+  center-wide daily information such as menus, planned activities, and program
+  updates.
 - Staff view: overview metrics, conversations, assignment/routing, dynamic
   knowledge gaps, AI decision traces, source editing, source creation, closed
   source-linked conversations, and reset.
@@ -81,8 +87,9 @@ family question → grounded answer or escalation → staff signal
 1. Confirm the behavior is consistent with [Requirements](REQUIREMENTS.md).
 2. Update seed data or answer rules in `app.js`.
 3. Preserve sensitive-topic escalation before keyword matching.
-4. Preserve the handbook boundary: generic policy questions can mention a child
-   name, but child-specific progress, homework, assignment, or daily-status
+4. Preserve the center-source boundary: generic policy, menu, calendar,
+   program, or daily-update questions can mention a child name, but
+   child-specific progress, homework, assignment, participation, or daily-status
    questions must defer to staff.
 5. Update docs if behavior changes.
 6. Run checks in [Operations](OPERATIONS.md).
@@ -100,12 +107,13 @@ family question → grounded answer or escalation → staff signal
 2. Run the quick checks in [Operations](OPERATIONS.md).
 3. Ensure `git status --short --ignored` has no untracked publishable files.
 4. Run or manually check [Test scenarios](TEST_SCENARIOS.md).
-5. Host through GitHub Pages, Netlify Drop, or Vercel.
+5. Confirm the hosted GitHub Pages URL still serves the latest committed
+   behavior.
 
 ## Open product questions
 
-- Final hosted URL after GitHub Pages is enabled.
-- Final public repository URL after the repo is pushed.
-- Whether to add screenshots before final submission. The current prototype is
-  functional without screenshots and the required submission path is the hosted
-  prototype plus `SUBMISSION.md`.
+- No blocking product questions remain for the current no-video submission
+  format.
+- Optional only: add screenshots if the reviewer-facing explanation needs
+  visual backup. The current required submission path is the hosted prototype
+  plus `SUBMISSION.md`.

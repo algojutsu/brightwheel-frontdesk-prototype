@@ -1,13 +1,16 @@
 # Agent guide
 
-This file is the fastest entry point for coding agents working on SproutDesk.
+This file is the fastest entry point for coding agents working on brightwheel
+Front Desk.
 Treat it as the repo-level operating manual.
 
 ## Project
 
-SproutDesk is a static, fictional-data prototype for a brightwheel AI Front
-Desk take-home assignment. It demonstrates a parent assistant and staff control
-center for an early education provider.
+brightwheel Front Desk is a static, fictional-data prototype for a brightwheel
+AI Front Desk take-home assignment. It demonstrates a parent assistant and
+staff control center for Juniper Lane Preschool, a fictional early education
+provider. The prototype covers center-approved policies, menus, daily
+activities, program updates, tours, tuition, and hours.
 
 Start with [docs/LLM_WIKI.md](docs/LLM_WIKI.md) for the full context map.
 
@@ -52,7 +55,8 @@ Product-level regression questions are captured in
 
 ## Key flows to preserve
 
-1. Parent asks a covered question, such as fever, lunch, tuition, hours, or tour.
+1. Parent asks a covered question, such as fever, lunch, daily activities,
+   program updates, tuition, hours, or tours.
 2. Assistant returns a concise answer with a source and reviewed date.
 3. Parent opens the AI trace to see confidence, source, matched terms, and
    decision.

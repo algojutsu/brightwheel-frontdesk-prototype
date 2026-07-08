@@ -105,8 +105,8 @@ evaluations.
 1. Integrate with brightwheel identity, center tenancy, family messaging, and
    role-based staff access instead of creating a separate account system.
 2. Store versioned knowledge in a database with approval and audit history.
-3. Build an ingestion pipeline for handbooks, calendars, billing data, and
-   center-authored structured policies.
+3. Build an ingestion pipeline for center-authored sources such as handbooks,
+   policies, menus, calendars, program updates, and billing data.
 4. Retrieve candidate passages with metadata and permission filtering.
 5. Generate answers under a strict schema requiring citations and an escalation
    decision.
