@@ -60,18 +60,11 @@ recommended.
 9. Return to Parent view and ask about weekend care again. The next answer uses
    the newly published source.
 
-## Hosting
+## Submission links
 
-Because the app is static, the fastest options are:
-
-- **Netlify Drop:** drag this folder onto Netlify Drop for a temporary public URL.
-- **GitHub Pages:** push the repository to GitHub, then enable Pages from the
-  repository root on the default branch.
-- **Vercel:** import the repository as a project and select “Other” as the
-  framework; no build command is needed and the output directory is `.`.
-
-Deployment is intentionally not performed by this repository because it requires
-access to the owner's external hosting account.
+- Hosted prototype: https://algojutsu.github.io/brightwheel-frontdesk-prototype/
+- Public repository: https://github.com/algojutsu/brightwheel-frontdesk-prototype
+- One-page explanation: [docs/SUBMISSION.md](docs/SUBMISSION.md)
 
 ## Repository structure
 
