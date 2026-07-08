@@ -13,7 +13,8 @@ without network access once the files are available.
 ## What the prototype demonstrates
 
 - A mobile-first parent assistant with guided prompts and free-text questions
-- Center-specific answers with visible sources and review dates
+- Center-specific answers for policies, menus, daily activities, and program
+  updates with visible sources and review dates
 - Parent-facing “why this answer” traces for source, confidence, and decision
 - Explicit uncertainty handling and human escalation
 - Topic-aware staff routing for admin, teacher, front desk, and safety handoffs
@@ -55,7 +56,7 @@ recommended.
 7. Switch to **Staff view** and inspect how the conversation is routed and
    surfaced in the knowledge-gap queue.
 8. Click **Draft source from question**, review the prefilled weekend-care
-   policy, and save it.
+   source, and save it.
 9. Return to Parent view and ask about weekend care again. The next answer uses
    the newly published source.
 

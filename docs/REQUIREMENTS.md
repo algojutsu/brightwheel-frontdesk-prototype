@@ -43,9 +43,10 @@ The standalone assignment capture is maintained in
    - operating hours and closures;
    - tuition;
    - health and attendance;
-   - meals;
+   - meals and school menu;
+   - center-wide daily activities and program updates;
    - tours.
-3. Show the policy source and its last-reviewed date for grounded answers.
+3. Show the center source and its last-reviewed date for grounded answers.
 4. Avoid pretending to know an answer when no source supports it.
 5. Route sensitive, ambiguous, or unsupported questions to staff.
 6. Preserve the question and relevant context in the handoff.
@@ -66,7 +67,8 @@ The standalone assignment capture is maintained in
 - A grounded answer must identify its source.
 - Health and medication responses must not present medical judgment.
 - Individual child progress, homework, assignment, daily-status, or classroom
-  context questions must route to staff instead of receiving a handbook answer.
+  context questions must route to staff instead of receiving a generic center
+  update.
 - Low-confidence or uncovered questions must explicitly state the limitation.
 - Escalation must be an intentional product state, not a generic error.
 - The system must never use real personal data; all names and policies are
@@ -100,7 +102,7 @@ The standalone assignment capture is maintained in
 - A reviewer can complete both core perspectives in under five minutes.
 - At least one grounded, one sensitive, and one unsupported question visibly
   produce different, appropriate outcomes.
-- A staff policy edit changes the next relevant parent answer.
+- A staff source edit changes the next relevant parent answer.
 - A weak answer creates a visible feedback loop in the control center.
 - The demo is persuasive without relying on a scripted explanation.
 

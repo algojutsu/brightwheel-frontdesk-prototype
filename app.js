@@ -1,4 +1,4 @@
-const STORAGE_KEY = "brightwheel-frontdesk-demo-v2";
+const STORAGE_KEY = "brightwheel-frontdesk-demo-v3";
 
 const seedKnowledge = [
   {
@@ -87,9 +87,38 @@ const seedKnowledge = [
       "food",
       "meal",
       "menu",
+      "school menu",
+      "today menu",
+      "today's menu",
       "allergy",
       "pack",
       "vegetarian",
+    ],
+  },
+  {
+    id: "daily-updates",
+    title: "Daily activities & program updates",
+    category: "Daily care",
+    icon: "◫",
+    summary:
+      "Today’s center-wide activity is garden science. Water play is paused because of weather, and soccer enrichment starts next week for enrolled preschool families.",
+    details:
+      "Today’s shared classroom theme is garden science. Children will explore seeds, soil, and plant observations during group time.\n\nWater play is paused today because of cooler weather. Soccer enrichment starts next week for enrolled preschool families; the front desk will confirm rosters and pickup notes by Friday.\n\nFor details about a specific child’s participation, mood, nap, meals, or progress, families should message the classroom team.",
+    reviewedAt: "Jul 7, 2026",
+    keywords: [
+      "activities",
+      "activity",
+      "daily activities",
+      "planned activities",
+      "program update",
+      "program updates",
+      "program changes",
+      "change in programs",
+      "enrichment",
+      "soccer",
+      "water play",
+      "garden science",
+      "daily schedule",
     ],
   },
   {
@@ -148,7 +177,7 @@ const seedConversations = [
     topic: "Unknown",
     status: "unanswered",
     answer:
-      "I couldn’t find a center policy that answers this, so I offered to send the question to staff.",
+      "I couldn’t find a center source that answers this, so I offered to send the question to staff.",
     sourceId: null,
     createdAt: "Yesterday, 5:36 PM",
   },
@@ -160,7 +189,7 @@ const seedConversations = [
     topic: "Unknown",
     status: "unanswered",
     answer:
-      "I couldn’t find a center policy for summer classroom transition dates, so I offered to send the question to staff.",
+      "I couldn’t find a center source for summer classroom transition dates, so I offered to send the question to staff.",
     sourceId: null,
     createdAt: "Yesterday, 2:20 PM",
   },
@@ -190,11 +219,11 @@ const seedConversations = [
 ];
 
 const suggestions = [
-  "Are you open on Veterans Day?",
-  "What is the fever policy?",
   "What is lunch today?",
+  "What activities are planned today?",
+  "Are there program changes this week?",
+  "Can Maya come with a fever?",
   "How much is infant care?",
-  "How can I schedule a tour?",
 ];
 
 const sensitiveRules = [
@@ -250,6 +279,10 @@ const childSpecificRule = {
     "classroom progress",
     "development milestone",
     "behavior",
+    "activity",
+    "activities",
+    "program",
+    "programs",
     "do today",
     "did today",
     "doing today",
@@ -258,7 +291,7 @@ const childSpecificRule = {
   directWords: ["homework", "assignment", "worksheet", "reading level", "learn to read"],
   topic: "Classroom",
   answer:
-    "That depends on your child and classroom context, so I shouldn’t answer it from the handbook alone. brightwheel Front Desk is best for center policies; I can send this to the classroom team so a staff member can respond with the right context.",
+    "That depends on your child and classroom context, so I shouldn’t answer it from the center sources alone. brightwheel Front Desk is best for center-wide information like policies, menus, daily schedules, and program updates; I can send this to the classroom team so a staff member can respond with the right context.",
 };
 
 const gapRules = [
@@ -269,7 +302,7 @@ const gapRules = [
     keywords: ["weekend", "saturday", "sunday", "backup", "after hours"],
     category: "Schedule",
     actionLabel: "Draft source",
-    description: "No published policy covers weekend or backup-care availability.",
+    description: "No published source covers weekend or backup-care availability.",
     draft: {
       title: "Weekend & backup care",
       summary:
@@ -331,7 +364,7 @@ const ambiguityRules = [
     topic: "Operations",
     relatedSourceIds: ["hours", "tuition"],
     answer:
-      "I found related schedule and tuition information, but I don’t see a published Juniper Lane policy for late-pickup fees. I can send this to the front desk so they can answer accurately and add the policy for next time.",
+      "I found related schedule and tuition information, but I don’t see a published Juniper Lane source for late-pickup fees. I can send this to the front desk so they can answer accurately and add the source for next time.",
     reason:
       "Related sources were found, but none explicitly covers late-pickup fees.",
   },
@@ -349,7 +382,7 @@ const ambiguityRules = [
     topic: "Enrollment",
     relatedSourceIds: ["tours"],
     answer:
-      "I found enrollment information, but not a center policy for drop-in or one-day care. I can send this to the front desk so they can confirm whether that option exists.",
+      "I found enrollment information, but not a center source for drop-in or one-day care. I can send this to the front desk so they can confirm whether that option exists.",
     reason:
       "The available enrollment source does not cover drop-in care.",
   },
@@ -488,7 +521,7 @@ function resetParentChat() {
     {
       role: "assistant",
       answer:
-        "Hi! I’m brightwheel Front Desk for Juniper Lane Preschool. I can help with center hours, tuition, health policies, meals, and tours. What can I find for you?",
+        "Hi! I’m brightwheel Front Desk for Juniper Lane Preschool. I can help with menus, daily activities, program updates, hours, tuition, health policies, and tours. If your question needs details about a specific child, I’ll help send it to staff. What can I find for you?",
       kind: "welcome",
     },
   ];
@@ -690,11 +723,11 @@ function inferKnowledgeGap(conversation) {
       actionLabel: "Draft source",
       description: "No published center source supported a confident answer.",
       draft: {
-        title: "New family question policy",
+        title: "New family question source",
         summary:
           "Add the center-approved answer here before publishing this source for families.",
         details:
-          "This draft was created from a family question the assistant could not answer. Replace this text with the approved policy, exceptions, and staff owner before publishing.",
+          "This draft was created from a family question the assistant could not answer. Replace this text with the approved answer, exceptions, and staff owner before publishing.",
         keywords: keywordsFromText(conversation.question),
       },
     };
@@ -731,10 +764,10 @@ function buildKnowledgeGaps() {
 function draftFromConversation(conversation) {
   const gap = inferKnowledgeGap(conversation);
   const draft = gap?.draft || {
-    title: "New family question policy",
+    title: "New family question source",
     summary: "Add the center-approved answer here before publishing this source for families.",
     details:
-      "This draft was created from a family question the assistant could not answer. Replace this text with the approved policy, exceptions, and staff owner before publishing.",
+      "This draft was created from a family question the assistant could not answer. Replace this text with the approved answer, exceptions, and staff owner before publishing.",
     keywords: keywordsFromText(conversation?.question || ""),
   };
   return {
@@ -790,7 +823,7 @@ function answerQuestion(question) {
         matchedKeywords: childMatches,
         decision: "Escalate to classroom staff",
         reason:
-          "The assistant is limited to handbook and center-policy questions. Individual development, homework, assignment, daily classroom, or child-specific questions need staff context.",
+          "The assistant is limited to center-wide sources such as policies, menus, schedules, and program updates. Individual development, homework, assignment, daily classroom, or child-specific questions need staff context.",
       },
     };
   }
@@ -843,14 +876,14 @@ function answerQuestion(question) {
         matchedSource: policy.title,
         matchedKeywords: ranked[0].matchedKeywords,
         decision: "Answer from center source",
-        reason: "The assistant found a reviewed Juniper Lane source with matching policy terms.",
+        reason: "The assistant found a reviewed Juniper Lane source with matching terms.",
       },
     };
   }
 
   return {
     answer:
-      "I couldn’t find a Juniper Lane policy that answers that, and I don’t want to guess. I can send your question to the front desk so the team can answer and improve this for next time.",
+      "I couldn’t find a Juniper Lane source that answers that, and I don’t want to guess. I can send your question to the front desk so the team can answer and improve this for next time.",
     sourceId: null,
     topic: "Unknown",
     status: "unanswered",
@@ -939,7 +972,7 @@ function conversationTrace(conversation, source) {
     reason: isResolved
       ? "Staff reviewed the gap and linked this conversation to a published source."
       : isAnswered
-        ? "The assistant found a reviewed Juniper Lane source with matching policy terms."
+        ? "The assistant found a reviewed Juniper Lane source with matching terms."
         : "The assistant did not have enough safe, source-backed information to answer directly.",
   };
 }
@@ -1221,7 +1254,7 @@ function renderInbox() {
                 isOpenStatus(selected.status)
                   ? `<div class="detail-signal"><strong>Why this needs attention</strong><p>${
                       selected.status === "unanswered"
-                        ? "No published center source supported a confident answer. Add or update a policy to close this gap."
+                        ? "No published center source supported a confident answer. Add or update a source to close this gap."
                         : "This question may involve an individual health or safety decision, so the assistant deferred to staff."
                     }</p></div>`
                   : selected.status === "resolved"
@@ -1249,7 +1282,7 @@ function renderInbox() {
 function renderKnowledge() {
   document.querySelector("#knowledge-section").innerHTML = `
     <div class="section-toolbar">
-      <div><h2>Center knowledge</h2><p>Published sources brightwheel Front Desk can use in family answers.</p></div>
+      <div><h2>Center knowledge</h2><p>Published policies, menus, schedules, and updates brightwheel Front Desk can use in family answers.</p></div>
       <div class="staff-header-actions">
         <span class="system-status"><i></i> ${state.knowledge.length} sources active</span>
         <button class="primary-button" type="button" data-new-policy>Add source</button>
@@ -1303,7 +1336,7 @@ function setStaffSection(section) {
 function openEditPolicy(policyId) {
   const policy = state.knowledge.find((item) => item.id === policyId);
   if (!policy) return;
-  document.querySelector("#edit-dialog-title").textContent = "Edit policy";
+  document.querySelector("#edit-dialog-title").textContent = "Edit source";
   document.querySelector("#edit-draft-note").hidden = true;
   document.querySelector("#edit-draft-note").innerHTML = "";
   document.querySelector("#edit-policy-id").value = policy.id;
@@ -1413,7 +1446,7 @@ function savePolicy(event) {
   const linkedMessage = autoResolvedCount
     ? ` Source linked to ${autoResolvedCount} other open conversation${autoResolvedCount === 1 ? "" : "s"}.`
     : "";
-  showToast(id ? "Policy published — future answers are updated" : `Source published — gap closed.${linkedMessage}`);
+  showToast(id ? "Source published — future answers are updated" : `Source published — gap closed.${linkedMessage}`);
 }
 
 document.querySelectorAll(".switch-button").forEach((button) => {

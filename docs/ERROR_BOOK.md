@@ -69,4 +69,4 @@ regression coverage for:
 - `Can Maya come with a fever?` → Health policy answer.
 - `When will my kid learn to read?` → Classroom staff handoff.
 - `What did Maya eat today?` → Classroom staff handoff.
-- `What is lunch today?` → Meals policy answer.
+- `What is lunch today?` → Meals source answer.

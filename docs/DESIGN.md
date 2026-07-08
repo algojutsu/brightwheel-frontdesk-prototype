@@ -67,17 +67,19 @@ The prototype also exposes a lightweight AI decision trace. Parents can open
 see the same trace in each conversation detail. This makes the AI factor visible
 without pretending a live model is running.
 
-### Policy questions stay separate from child-specific questions
+### Center-wide updates stay separate from child-specific questions
 
-brightwheel Front Desk is meant for handbook and center-policy questions. A question like
-“Can Maya come with a fever?” still receives the fever policy because it asks a
-general attendance rule using a child’s name. A question like “When will my kid
-learn to read?”, “What did Maya eat today?”, or a homework/assignment question
-requires child or classroom context and is routed to staff.
+brightwheel Front Desk is meant for center-wide sources: handbook policies,
+menus, daily schedules, and program updates. A question like “Can Maya come with
+a fever?” still receives the fever policy because it asks a general attendance
+rule using a child’s name. A question like “What activities are planned today?”
+can receive the center-wide daily update. A question like “When will my kid
+learn to read?”, “What did Maya eat today?”, or “What activities did Maya do
+today?” requires child or classroom context and is routed to staff.
 
 ### Sources are first-class
 
-Source chips open the exact center policy used for an answer. This makes
+Source chips open the exact center source used for an answer. This makes
 trustworthiness inspectable and gives operators a direct route to correct the
 system.
 
@@ -96,9 +98,9 @@ catch-all front desk.
 
 ### Fictional but realistic data
 
-Policies include dates, exceptions, price bands, and operational language. This
-creates enough specificity to demonstrate grounding without using personal or
-proprietary data.
+Sources include dates, daily menu/activity details, exceptions, price bands, and
+operational language. This creates enough specificity to demonstrate grounding
+without using personal or proprietary data.
 
 ## Primary flows
 
@@ -107,7 +109,7 @@ proprietary data.
 1. Parent chooses a prompt or types a question.
 2. Assistant identifies a covered topic.
 3. A concise answer appears with a source chip and review date.
-4. Parent can inspect the full policy.
+4. Parent can inspect the full source.
 
 ### Sensitive or ambiguous question
 
@@ -119,7 +121,7 @@ proprietary data.
 
 1. An unsupported question produces an honest limitation and escalation option.
 2. The conversation appears in the staff inbox and dynamic gap queue.
-3. Staff opens an AI-labeled, prefilled policy draft from the question.
+3. Staff opens an AI-labeled, prefilled source draft from the question.
 4. Publishing the source closes the gap and links the original conversation to
    the new source.
 5. The original conversation remains searchable as “Closed with source.”

@@ -75,12 +75,13 @@ brightwheel Front Desk is a static single-page app for a fictional center,
 Juniper Lane Preschool. It includes:
 
 - parent assistant with free-text and guided prompts;
-- source-backed answers for hours, tuition, health, meals, and tours;
+- source-backed answers for hours, tuition, health, meals, daily activities,
+  program updates, and tours;
 - sensitive-topic escalation;
 - unsupported-question handoff;
 - staff dashboard, conversation review, topic assignment, and dynamic knowledge
   gaps;
-- policy editing and policy creation from unsupported questions;
+- source editing and source creation from unsupported questions;
 - browser-local state and one-click reset.
 
 See [Requirements](REQUIREMENTS.md), [Design](DESIGN.md), and

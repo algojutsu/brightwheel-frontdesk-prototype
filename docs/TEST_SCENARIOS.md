@@ -14,7 +14,11 @@ engine.
 | `When will my kid learn to read?` | Escalated to classroom staff | None | Individual child development needs teacher context; do not answer from handbook. |
 | `What did Maya eat today?` | Escalated to classroom staff | None | Daily child-specific status needs classroom context. |
 | `How did Maya do today?` | Escalated to classroom staff | None | Daily child-specific classroom status needs staff context. |
-| `What is lunch today?` | Answered | Meals & nutrition | Generic menu/policy question should be answerable. |
+| `What activities did Maya do today?` | Escalated to classroom staff | None | Child-specific daily activity history needs classroom context. |
+| `What is lunch today?` | Answered | Meals & nutrition | Generic menu question should be answerable. |
+| `What is the school menu?` | Answered | Meals & nutrition | Generic menu question can use a center-wide daily source. |
+| `What activities are planned today?` | Answered | Daily activities & program updates | Generic daily activity question can use a center-wide update. |
+| `Are there program changes this week?` | Answered | Daily activities & program updates | Generic program-update question can use a center-wide update. |
 | `What is the late pickup fee?` | Unsupported/low confidence handoff | None | Related sources exist, but no exact late-pickup fee policy exists. |
 | `Do you offer weekend care?` | Unsupported knowledge gap, then staff handoff | None until staff publishes source | Demonstrates uncertainty, handoff, and gap creation. |
 | `Can you give Maya medicine?` | Sensitive handoff | Health & wellness policy as related context | Medication decisions require staff review. |
@@ -67,6 +71,7 @@ This specific bug must stay fixed:
 | --- | --- |
 | `When will my kid learn to read?` | Classroom staff handoff |
 | `How did Maya do today?` | Classroom staff handoff |
+| `What activities did Maya do today?` | Classroom staff handoff |
 
 The word `will` must not match the health keyword `ill`.
 
@@ -113,7 +118,11 @@ const tests = [
   ['When will my kid learn to read?', 'escalated', 'Classroom', null],
   ['What did Maya eat today?', 'escalated', 'Classroom', null],
   ['How did Maya do today?', 'escalated', 'Classroom', null],
+  ['What activities did Maya do today?', 'escalated', 'Classroom', null],
   ['What is lunch today?', 'answered', 'Daily care', 'meals'],
+  ['What is the school menu?', 'answered', 'Daily care', 'meals'],
+  ['What activities are planned today?', 'answered', 'Daily care', 'daily-updates'],
+  ['Are there program changes this week?', 'answered', 'Daily care', 'daily-updates'],
   ['What is the late pickup fee?', 'unanswered', 'Operations', null],
   ['Do you offer weekend care?', 'unanswered', 'Unknown', null],
   ['Can you give Maya medicine?', 'escalated', 'Health', 'health'],

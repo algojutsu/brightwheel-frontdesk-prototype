@@ -10,8 +10,8 @@ UI events
   ├─ parent question → intent and safety rules → source-backed response
   ├─ escalation → local conversation store → staff inbox, routing, and metrics
   ├─ knowledge gap → prefilled source draft → local knowledge store
-  ├─ policy creation → matching open gaps → closed linked conversations
-  └─ policy edit or creation → subsequent answer behavior
+  ├─ source creation → matching open gaps → closed linked conversations
+  └─ source edit or creation → subsequent answer behavior
 ```
 
 ## Why a static architecture

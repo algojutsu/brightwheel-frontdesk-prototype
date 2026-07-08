@@ -41,8 +41,8 @@
               <span class="eyebrow">Juniper Lane Preschool</span>
               <h1 id="parent-title">Questions about care?<br />Start here.</h1>
               <p>
-                Get a quick answer from your center’s policies. If something needs a
-                person, we’ll make that clear.
+                Get a quick answer from your center’s policies, menus, and daily
+                updates. If something needs a person, we’ll make that clear.
               </p>
             </div>
             <div class="open-status">
@@ -57,7 +57,7 @@
                 <div class="assistant-avatar" aria-hidden="true">S</div>
                 <div>
                   <strong>AI assistant</strong>
-                  <span><i></i> Answers from Juniper Lane policies</span>
+                  <span><i></i> Answers from Juniper Lane sources</span>
                 </div>
                 <button class="icon-button" id="new-chat" type="button" title="Start over">
                   <span aria-hidden="true">↻</span>
@@ -74,7 +74,7 @@
                   <textarea
                     id="question-input"
                     rows="1"
-                    placeholder="Ask about hours, meals, tuition..."
+                    placeholder="Ask about menus, activities, hours..."
                     maxlength="240"
                   ></textarea>
                   <button id="send-question" type="submit" aria-label="Send question">
@@ -104,7 +104,7 @@
                 <div class="shield" aria-hidden="true">✓</div>
                 <div>
                   <h3>Answers you can check</h3>
-                  <p>Every policy answer links back to the center’s source of truth.</p>
+                  <p>Every grounded answer links back to Juniper Lane’s source of truth.</p>
                 </div>
               </div>
             </aside>
@@ -160,7 +160,7 @@
       <div class="dialog-header">
         <div>
           <span class="eyebrow">Center source</span>
-          <h2 id="source-dialog-title">Policy</h2>
+          <h2 id="source-dialog-title">Source</h2>
         </div>
         <button class="dialog-close icon-button" type="button" aria-label="Close">×</button>
       </div>
@@ -172,7 +172,7 @@
         <div class="dialog-header">
           <div>
             <span class="eyebrow">Source of truth</span>
-            <h2 id="edit-dialog-title">Edit policy</h2>
+            <h2 id="edit-dialog-title">Edit source</h2>
           </div>
           <button class="dialog-close icon-button" type="button" aria-label="Close">×</button>
         </div>
@@ -180,7 +180,7 @@
           <input id="edit-policy-id" type="hidden" />
           <input id="edit-policy-conversation-id" type="hidden" />
           <label>
-            Policy name
+            Source name
             <input id="edit-policy-title" required maxlength="80" />
           </label>
           <label>
@@ -202,7 +202,7 @@
             <small>This is the concise answer families see first.</small>
           </label>
           <label>
-            Policy details
+            Source details
             <textarea id="edit-policy-details" required rows="7" maxlength="1200"></textarea>
           </label>
           <label>

@@ -5,12 +5,13 @@ Prototype URL: `<paste hosted URL>`
 Source repo: `<paste public GitHub repo URL>`
 
 brightwheel Front Desk is a multi-tier AI Front Desk prototype for a fictional
-early education center, Juniper Lane Preschool. The parent tier answers common family
-questions from center-authored sources and shows why the answer should be
-trusted: source, review date, confidence, matched terms, and decision. When the
-question is sensitive, unsupported, or specific to an individual child, the
-assistant does not guess. It creates a clear staff handoff with the original
-conversation preserved.
+early education center, Juniper Lane Preschool. The parent tier answers common
+family questions from center-authored sources: policies, menus, daily
+activities, and program updates. It shows why the answer should be trusted:
+source, review date, confidence, matched terms, and decision. When the question
+is sensitive, unsupported, or specific to an individual child, the assistant does
+not guess. It creates a clear staff handoff with the original conversation
+preserved.
 
 The staff tier closes the feedback loop. Operators can review conversations,
 see the simulated AI decision trace, identify unresolved demand, and edit or
