@@ -1,8 +1,8 @@
 # Submission summary
 
-Prototype URL: `<paste hosted URL>`
+Prototype URL: `https://algojutsu.github.io/brightwheel-frontdesk-prototype/`
 
-Source repo: `<paste public GitHub repo URL>`
+Source repo: `https://github.com/algojutsu/brightwheel-frontdesk-prototype`
 
 brightwheel Front Desk is a multi-tier AI Front Desk prototype for a fictional
 early education center, Juniper Lane Preschool. The parent tier answers common
